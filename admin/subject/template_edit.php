@@ -32,6 +32,13 @@ require_once('../../admin/classes/AdminUser.php');
         $get_subject_template->bindValue(":subject_template_id", $subject_template_id);
         $get_subject_template->execute();
 
+
+        // <select class='form-control' name='subject_type'>
+        //                         <option value='CORE SUBJECTS'" . ($subject_type == 'CORE SUBJECTS' ? " selected" : "") . ">CORE SUBJECTS</option>
+        //                         <option value='APPLIED SUBJECTS'" . ($subject_type == 'APPLIED SUBJECTS' ? " selected" : "") . ">APPLIED SUBJECTS</option>
+        //                         <option value='SPECIALIZED_SUBJECTS'" . ($subject_type == 'SPECIALIZED_SUBJECTS' ? " selected" : "") . ">SPECIALIZED_SUBJECTS</option>
+        //                     </select>
+
         if($get_subject_template->rowCount() > 0){
 
             $row = $get_subject_template->fetch(PDO::FETCH_ASSOC);
@@ -108,9 +115,9 @@ require_once('../../admin/classes/AdminUser.php');
                         <div class='form-group mb-2'>
 
                             <select class='form-control' name='subject_type'>
-                                <option value='CORE SUBJECTS'" . ($subject_type == 'CORE SUBJECTS' ? " selected" : "") . ">CORE SUBJECTS</option>
-                                <option value='APPLIED SUBJECTS'" . ($subject_type == 'APPLIED SUBJECTS' ? " selected" : "") . ">APPLIED SUBJECTS</option>
-                                <option value='SPECIALIZED_SUBJECTS'" . ($subject_type == 'SPECIALIZED_SUBJECTS' ? " selected" : "") . ">SPECIALIZED_SUBJECTS</option>
+                                <option value='Core'" . ($subject_type == 'Core' ? " selected" : "") . ">Core</option>
+                                <option value='Applied'" . ($subject_type == 'Applied' ? " selected" : "") . ">Applied</option>
+                                <option value='Specialized'" . ($subject_type == 'Specialized' ? " selected" : "") . ">Specialized</option>
                             </select>
                         </div>
 

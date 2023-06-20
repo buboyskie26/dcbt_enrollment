@@ -44,8 +44,8 @@
             <div class="column">
                 <div class="header">
                     <!-- <img src="assets/images/icons/VideoTubeLogo.png" title="logo" alt="Site logo"> -->
-                    <h3>Teacher Sign In</h3>
-                    <span>to Enrollment</span>
+                     <h3 class="text-center text-muted">Teacher</h3>
+
                 </div>
 
                 <div class="buttons">

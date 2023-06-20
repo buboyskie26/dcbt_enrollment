@@ -71,7 +71,6 @@
 	<script src="../../assets/js/bootbox.min.js"></script>
     <script src="../../assets/js/common.js"></script>
 
-
     <link rel="stylesheet" href="../../assets/css/bootstrap-datetimepicker.css">
     <script src="../../assets/js/bootstrap-datetimepicker.js"></script>
 

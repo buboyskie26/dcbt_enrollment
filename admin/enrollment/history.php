@@ -22,22 +22,32 @@
 <div class="row col-md-12">
 
     <div class="card">
+
+
         <div class="card-header">
             <h4 class="text-center">Enrollment History</h4>
+
+            <div class="row">
+            <a href="<?php echo directoryPath . "create.php"; ?>">
+                <button class="mb-3 btn btn-success">
+                   <i class='fas fa-plus-circle'></i> Manual Enrollment
+                </button>
+            </a> 
+        </div>
         </div>
 
         <div class="card-body">
 
-            <!-- <table id="historyTable" class="table table-responsive">
+            <table class="table table-responsive">
                 <tr class='bg-dark text-center'> 
-                    <th rowspan="2">Student Id</th>
+                    <th rowspan="2">ID</th>
                     <th rowspan="2">Fullname</th>
                     <th rowspan="2">Semester</th>  
                     <th rowspan="2">Term</th>  
                     <th rowspan="2">Department</th>  
                     <th rowspan="2">Level</th>  
                     <th rowspan="2">Section</th>  
-                    <th rowspan="2">Action</th>  
+                    <!-- <th rowspan="2">Action</th>   -->
                 </tr>	
 
                 <tbody>
@@ -46,7 +56,7 @@
                         $enrolled  = "enrolled";
                     
                         $query = $con->prepare("SELECT 
-                            t1.course_id,
+                            t1.*,
 
                             t2.*,
 
@@ -59,7 +69,9 @@
                             LEFT JOIN course as t3 ON t3.course_id = t1.course_id
                             LEFT JOIN school_year as t4 ON t4.school_year_id = t1.school_year_id
 
-                            WHERE t1.enrollment_status=:enrolled");
+                            WHERE t1.enrollment_status=:enrolled
+                            
+                            ORDER BY t1.enrollment_date DESC");
 
                         $query->bindValue(":enrolled", $enrolled);
                         $query->execute();
@@ -69,6 +81,7 @@
                         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                             
                             $course_id = $row['course_id'];
+                            $student_id = $row['student_id'];
                             $firstname = $row['firstname'];
                             $student_unique_id = $row['student_unique_id'];
                             $lastname = $row['lastname'];
@@ -77,7 +90,32 @@
                             $term = $row['term'];
                             $period = $row['period'];
                             $is_tertiary = $row['is_tertiary'];
+                            $school_year_id = $row['school_year_id'];
+                            $enrollment_status = $row['enrollment_status'];
 
+
+                            $btn1 = "";
+                            $btn2 = "";
+
+                            if($enrollment_status == "tentative"){
+                                $btn1 = "
+                                <a href=''>
+                                    <button class='btn btn-primary'>
+                                        <i class='fas fa-address-card'></i>
+                                    </button>
+                                </a>
+                                ";
+                            }
+                            
+                            if($enrollment_status == "enrolled"){
+                                $btn2 = "
+                                <a href='../student/view_details.php?profile=show&id=473'>
+                                    <button class='btn btn-primary'>
+                                        <i class='fas fa-eye'></i>
+                                    </button>
+                                </a>
+                                ";
+                            }
 
                             $department_name = $is_tertiary == 0 ? "SHS" : "Tertiary";
                             
@@ -90,19 +128,15 @@
 
                             $editUrl = directoryPath . "edit.php?section_id=$course_id";
                             echo "<tr class='text-center'>";
-                                echo "<td>$student_unique_id</td>";
+                                echo "<td>$student_id</td>";
                                 echo "<td>$fullname</td>";
                                 echo "<td>$period</td>";
                                 echo "<td>$term</td>";
                                 echo "<td>$department_name</td>";
                                 echo "<td>Program</td>";
                                 echo "<td>$program_section</td>";
-                                
-                                echo "
-                                    <td>
-                                       
-                                    </td>
-                                ";
+                                 
+                                 
                             echo "</tr>";
                         }
 
@@ -110,9 +144,9 @@
                     
                     ?>
                 </tbody>
-            </table> -->
+            </table>
 
-            <table id="historyTable"
+            <!-- <table id="historyTable"
                 class="table table-bordered table-hover " 
                 style="font-size:15px" cellspacing="0"> 
                 <thead>
@@ -125,17 +159,8 @@
                         <th>Section</th>
                         <th>Department</th>
                     </tr>
-
-                    <!-- <th rowspan="2">Student Id</th>
-                    <th rowspan="2">Fullname</th>
-                    <th rowspan="2">Semester</th>  
-                    <th rowspan="2">Term</th>  
-                    <th rowspan="2">Department</th>  
-                    <th rowspan="2">Level</th>  
-                    <th rowspan="2">Section</th>  
-                    <th rowspan="2">Action</th>   -->
                 </thead>
-            </table>
+            </table> -->
 
         </div>
     </div>

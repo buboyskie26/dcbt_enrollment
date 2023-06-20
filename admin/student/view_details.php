@@ -119,12 +119,14 @@
                 padding: 20px 53px 0px;
                 gap: 1px;
                 width: 100%;
-                height: 74px;
+                height: 105px;
                 background: #1A0000;
                 flex: none;
                 order: 2;
                 align-self: stretch;
                 flex-grow: 0;
+
+                padding: 10px;
             }
             .selection-btn{
                 display: flex;
@@ -359,6 +361,7 @@
                 $proccess_date = $getEnrollmentNonEnrolledDate;
             }
 
+
             # ==1
             if(isset($_GET['profile']) && $_GET['profile'] == "show"){
             ?>
@@ -457,7 +460,6 @@
                                     </div>
 
                                     <div class="enrolled-subjects">
-                                        
                                         <!-- <a href="view_details.php?subject=show&tertiary=true&id=<?php echo $student_id?>"> -->
                                         <a href="view_details.php?subject=show&tertiary=true&id=<?php echo $student_id;?>">
                                             <button
@@ -476,8 +478,7 @@
 
                     <hr>
 
-
-                    <div class="card">
+                    <div style="display: none;" class="card">
                         <div class="card-body">
                             <div class="table-responsive">
                                 <h4 class="mb-3 text-start text-primary">Student Information</h4>
@@ -642,7 +643,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card">
+                    <div style="display: none;" class="card">
                         <div class="card-body">
                             <div class="table-responsive">
                                 <h4 class="mb-3 text-start text-primary">Guardian`s Information</h4>
@@ -4664,7 +4665,6 @@
 <script>
 
     // 
-
     function MarkAsPassed(subject_id, student_id, remarks,
         student_subject_id, course_id, subject_title){
 

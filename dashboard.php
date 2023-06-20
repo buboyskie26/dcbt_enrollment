@@ -1,5 +1,60 @@
 <?php
     include('includes/config.php');
+
+    // require_once('./classes/StudentEnroll.php');
+    require_once('enrollment/classes/StudentEnroll.php');
+    require_once('includes/classes/form-helper/Constants.php');
+
+    // require_once('../includes/config.php');
+    // require_once('../includes/classes/form-helper/Constants.php');
+
+    $enroll = new StudentEnroll($con);
+
+
+    if(isset($_POST['samp_btn'])
+      && isset($_POST['username'])
+      && isset($_POST['password'])
+      ){
+      // echo "qwe";
+
+      $username =  $_POST['username'];
+      $password =  $_POST['password'];
+
+      // echo $username;
+      // echo $password;
+
+
+      $wasSuccess = $enroll->loginStudentUser($username, $password);
+
+      // if(sizeof($object) > 0 && $object[1] == true){
+      if(sizeof($wasSuccess) > 0 && $wasSuccess[1] == true && $wasSuccess[2] == "enrolled"){
+
+          $_SESSION['username'] = $wasSuccess[0];
+          $_SESSION['status'] = "enrolled";
+
+          // $current_url = "http://" . $_SERVER['HTTP_HOST'] ;
+          $current_url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+          $url = "http://localhost/dcbt/enrollment/profile.php";
+          header("Location: " . $url . "");
+          // echo $current_url;
+          // header("Location: " . $current_url . "profile.php");
+      }
+
+      if(sizeof($wasSuccess) > 0 && $wasSuccess[1] == true && $wasSuccess[2] != "enrolled"){
+          $_SESSION['username'] = $wasSuccess[0];
+          $_SESSION['status'] = "pending";
+
+          // $current_url = "http://" . $_SERVER['HTTP_HOST'] ;
+          $current_url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+          $url = "http://localhost/dcbt/enrollment/profile.php?fill_up_state=finished";
+          header("Location: " . $url . "");
+      }
+
+    }
+
+
 ?>
 
 
@@ -31,9 +86,9 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-      <a class="navbar-brand" href="/DCBT-2/Main.html">
+      <a class="navbar-brand" href="Main.html">
         <img
-          src="/DCBT-2/img/DCBT-Logo.jpg"
+          src="img/DCBT-Logo.jpg"
           alt="DCBT-Logo"
         />
       </a>
@@ -62,6 +117,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" id="show-login"><span>LOGIN</span></a>
+            <!-- <a href="enrollment/student_login.php" class="nav-link"><span>LOGIN</span></a> -->
           </li>
         </ul>
       </div>
@@ -69,7 +125,7 @@
 
     <div class="header">
       <img
-        src="/DCBT-2/img/DCBT-Logo.jpg"
+        src="img/DCBT-Logo.jpg"
         alt="DCBT-Logo"
       />
       <h2>DAEHAN COLLEGE OF BUSINESS AND TECHNOLOGY</h2>
@@ -79,7 +135,7 @@
       <div class="content-1">
         <div class="content-img1">
           <img
-            src="/DCBT-2/img/DCBT-Cover.jpg"
+            src="img/DCBT-Cover.jpg"
             alt="DCBT-Cover"
           />
         </div>
@@ -104,7 +160,7 @@
           <div class="col">
             <div class="course-header">
               <img
-                src="/DCBT-2/img/DCBT-SHS-Logo.jpg"
+                src="img/DCBT-SHS-Logo.jpg"
               />
               <h3>Senior High</h3>
             </div>
@@ -129,7 +185,7 @@
           <div class="col">
             <div class="course-header">
               <img
-                src="/DCBT-2/img/DCBT-Logo.jpg"
+                src="img/DCBT-Logo.jpg"
               />
               <h3>College</h3>
             </div>
@@ -153,25 +209,25 @@
       <div class="slideshow-container">
         <div class="slide-img fade">
           <img
-            src="/DCBT-2/img/DCBT-Building.jpg"
+            src="img/DCBT-Building.jpg"
             style="width: 100%"
           />
         </div>
         <div class="slide-img fade">
           <img
-            src="/DCBT-2/img/DCBT-Building.jpg"
+            src="img/DCBT-Building.jpg"
             style="width: 100%"
           />
         </div>
         <div class="slide-img fade">
           <img
-            src="/DCBT-2/img/DCBT-Building.jpg"
+            src="img/DCBT-Building.jpg"
             style="width: 100%"
           />
         </div>
         <div class="slide-img fade">
           <img
-            src="/DCBT-2/img/DCBT-Building.jpg"
+            src="img/DCBT-Building.jpg"
             style="width: 100%"
           />
         </div>
@@ -218,25 +274,25 @@
       <div class="slideshow-container">
         <div class="slide-img2 fade">
           <img
-            src="/DCBT-2/img/DCBT-Cover.jpg"
+            src="img/DCBT-Cover.jpg"
             style="width: 100%"
           />
         </div>
         <div class="slide-img2 fade">
           <img
-            src="/DCBT-2/img/DCBT-Cover.jpg"
+            src="img/DCBT-Cover.jpg"
             style="width: 100%"
           />
         </div>
         <div class="slide-img2 fade">
           <img
-            src="/DCBT-2/img/DCBT-Cover.jpg"
+            src="img/DCBT-Cover.jpg"
             style="width: 100%"
           />
         </div>
         <div class="slide-img2 fade">
           <img
-            src="/DCBT-2/img/DCBT-Cover.jpg"
+            src="img/DCBT-Cover.jpg"
             style="width: 100%"
           />
         </div>
@@ -261,28 +317,31 @@
     </footer>
 
     <div class="popup" id="login-form">
+
       <div class="close-btn">&times;</div>
-      <div class="form">
+      <form method="POST">
+        <div class="form">
         <h2>Log-in</h2>
         <p>Log-in with your school email</p>
-
         <div class="form-element">
           <label for="email">Email</label>
-          <input type="text" id="email">
+          <input name="username" type="text" id="email">
         </div>
         <div class="form-element">
           <a class="forgot-email">Forgot email?</a>
         </div>
         <div class="form-element">
           <label for="password">Password</label>
-          <input type="text" id="password">
-      </div>
-      <div class="form-element">
-        <a class="forgot-password">Forgot password?</a>
-      </div>
-      <div class="form-element">
-        <button type="button">Confirm</button>
-      </div>
+          <input value="123456" type="password" name="password" id="password">
+        </div>
+        <div class="form-element">
+          <a class="forgot-password">Forgot password?</a>
+        </div>
+        <div class="form-element">
+          <button name="samp_btn" type="submit">Confirm</button>
+        </div>
+      </form>
+
     </div>
 
     <script>

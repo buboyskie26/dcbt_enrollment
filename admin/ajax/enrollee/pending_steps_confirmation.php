@@ -184,7 +184,7 @@
                 $update_parent = $pending->GetParentMatchPendingStudentId($pending_enrollees_id,
                     $student_id);
 
-                if($update_parent){
+                if($student_id){
 
                     $insert_enrollment = $con->prepare("INSERT INTO enrollment
                         (student_id, course_id, school_year_id, enrollment_status,

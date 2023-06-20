@@ -987,12 +987,12 @@ class AdminUser{
 
                 <div class='card-header'>
                     <h6>System S.Y $current_school_term $current_school_period Semester</h6>
-                    <h3 class='text-center'>School Year Maintenace</h3>
+                    <h3 class='text-center'>School Year Maintenance</h3>
 
                 </div>
 
                 <div class='card-body'>
-                    <form method='POST'>
+                    <form style='display: none;' method='POST'>
                         <button name='end_enrollment_btn' type='submit'class='btn btn-sm btn-success'>End Enrollment</button>
                     </form>
                     <table class='table table-hover'>

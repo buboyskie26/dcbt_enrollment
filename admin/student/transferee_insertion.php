@@ -3,6 +3,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         .form-header h2{
             font-style: normal;
@@ -168,6 +169,12 @@
 
     include('../../includes/classes/Student.php');
     include('../classes/Course.php');
+
+    ?>
+        <head>
+            <link rel="stylesheet" href="../../admin//assets/css/enrollees/transferee_insertion.css">
+        </head>
+    <?php
 
     $enroll = new StudentEnroll($con);
     $oldEnroll = new OldEnrollees($con, $enroll);
@@ -521,7 +528,117 @@
         
         ?>
             <div class="col-md-12 row">
-                <div class="table-responsive" style="margin-top:5%;"> 
+
+
+            <!--  -->
+
+            <div class="back-menu">
+                <button type="button" class="admission-btn" onclick="find_form()">
+                <i class="bi bi-arrow-left-circle"></i> Admission
+                </button>
+            </div>
+
+            <div class="enrollment-form-container">
+
+                <div class="enrollment-form-upper">
+                    <h3>Enrollment Form</h3>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+
+                <div class="form-upper-second-container">
+                    <div class="form-inner">
+                        <h5>Form ID</h5>
+                        <p><?php echo $get_student_enrollment_form_id;?></p>
+                    </div>
+                    <div class="form-inner">
+                        <h5>Admission Type</h5>
+                        <p><?php echo $admission_status;?></p>
+                    </div>
+                    <div class="form-inner">
+                        <h5>Student No</h5>
+                        <p><?php echo $student_unique_id;?></p>
+                    </div>
+                    <div class="form-inner">
+                        <h5>Status</h5>
+                        <p><?php echo $payment_status;?></p>
+                    </div>
+                    <div class="form-inner">
+                        <h5>Submitted on</h5>
+                        <p>
+                            <?php
+                                $date = new DateTime($proccess_date);
+                                $formattedDate = $date->format('m/d/Y H:i');
+
+                                echo $formattedDate;
+                            ?>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-upper-third-container">
+                    <div class="student-details-tab">
+
+                        <a href="transferee_insertion.php?details=true&id=<?php echo $student_id?>">
+                            <button class="active">
+                                <i class="fas fa-check-circle"></i> Student Details
+                            </button>
+                        </a>
+
+                    </div>
+
+                    <div class="enrolled-subjects-tab ">
+                        <a href="transferee_insertion.php?enrolled_subjects=true&id=<?php echo $student_id?>">
+
+                        <!-- <a href="subject_insertion.php?enrolled_subjects=true&id=<?php echo $student_id;?>"> -->
+                            <button class="none-active">
+                                    <i class="fas fa-book"></i> Enrolled Subjects
+                            </button>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="height-student-details">
+                <div class="student-details-container">
+                    <!--student-detials-->
+                    <div class="form-detailsx" id="student-form">
+                        <h3>Student details</h3>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <th>Name</th>
+                                <td colspan="2"><?php echo $student_firstname;?></td>
+                                <td colspan="2"><?php echo $student_lastname;?></td>
+                                <td colspan="2"><?php echo $student_middle_name;?></td>
+                            </tr>
+                            <tr>
+                                <th>Birthdate</th>
+                                <td><?php 
+                                    $date = new DateTime($student->GetStudentBirthdays());
+                                    $formattedDate = $date->format('m/d/Y H:i');
+
+                                    echo $formattedDate;
+                                ?></td>
+                                <th>Gender</th>
+                                <td><?php echo $student->GetStudentSex();?></td>
+                                <th>Contact no.</th>
+                                <td><?php echo $student->GetContactNumber();?></td>
+
+                            </tr>
+                            <tr>
+                                <th>Address</th>
+                                <td><?php echo $student->GetStudentAddress();?></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+                
+
+            <!--  -->
+
 
                 <div class="content">
                     <div class="form-header ">
@@ -967,8 +1084,397 @@
 
         ?>
             <div class="col-md-12 row">
-                <div class="table-responsive" style="margin-top:5%;"> 
+                 
+                <!--  -->
+                <div class="back-menu">
+                    <button type="button" class="admission-btn" onclick="find_form()">
+                    <i class="bi bi-arrow-left-circle"></i> Admission
+                    </button>
+                </div>
 
+                <div class="enrollment-form-container">
+
+                    <div class="enrollment-form-upper">
+                        <h3>Enrollment Form</h3>
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </div>
+
+                    <div class="form-upper-second-container">
+                        <div class="form-inner">
+                            <h5>Form ID</h5>
+                            <p><?php echo $get_student_enrollment_form_id;?></p>
+                        </div>
+                        <div class="form-inner">
+                            <h5>Admission Type</h5>
+                            <p><?php echo $admission_status;?></p>
+                        </div>
+                        <div class="form-inner">
+                            <h5>Student No</h5>
+                            <p><?php echo $student_unique_id;?></p>
+                        </div>
+                        <div class="form-inner">
+                            <h5>Status</h5>
+                            <p><?php echo $payment_status;?></p>
+                        </div>
+                        <div class="form-inner">
+                            <h5>Submitted on</h5>
+                            <p>
+                                <?php
+                                    $date = new DateTime($proccess_date);
+                                    $formattedDate = $date->format('m/d/Y H:i');
+
+                                    echo $formattedDate;
+                                ?>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-upper-third-container">
+                        <div class="student-details-tab">
+
+                            <a href="transferee_insertion.php?details=true&id=<?php echo $student_id?>">
+                                <button class="none-active">
+                                    <i class="fas fa-check-circle"></i> Student Details
+                                </button>
+                            </a>
+
+                        </div>
+
+                        <div class="enrolled-subjects-tab ">
+                            <a href="transferee_insertion.php?enrolled_subjects=true&id=<?php echo $student_id?>">
+                            <!-- <a href="subject_insertion.php?enrolled_subjects=true&id=<?php echo $student_id;?>"> -->
+                                <button class="active">
+                                        <i class="fas fa-book"></i> Enrolled Subjects
+                                </button>
+                            </a>
+                        </div>
+                        
+                    </div>
+
+
+                </div>
+
+                
+                <div class="height-enrolled-details">
+                    <div class="enrolled-details-container">
+
+                        <!--enrolled-subjects-->
+                        <div class="form-details-enrolled" id="enrollment-form">
+                            <h3>Enrollment Details</h3>
+
+                            <div class="form-enrolled-details">
+                                <div class="form-inner">
+                                    <h4>S.Y</h4>
+                                    <p><?php echo $current_school_year_term?></p>
+                                </div>
+                                <div class="form-inner">
+                                    <h4>Track</h4>
+                                    <p><?php echo $track_name;?></p>
+                                </div>
+                                <div class="form-inner">
+                                    <h4>Strand</h4>
+                                    <p><?php echo $strand_name; ?></p>
+                                </div>
+                                <div class="form-inner">
+                                    <h4>Level</h4>
+                                    <p><?php echo $student_course_level;?></p>
+                                </div>
+                                <div class="form-inner">
+                                    <h4>Semester</h4>
+                                    <p>
+                                        <?php echo $current_school_year_period?>
+                                    </p>
+                                </div>
+                            </div>                          
+
+                            <!-- <table>
+                                <tbody>
+                                <tr>
+                                    <th>S.Y.</th>
+                                    <td>2023-2024</td>
+                                    <th>Track</th>
+                                    <td colspan="2"><?php echo $track_name;?></td>
+                                    <th>Strand</th>
+                                    <td colspan="2"><?php echo $strand_name; ?></td>
+                                    <th >Level</th>
+                                    <td>Grade <?php echo $student_course_level;?></td>
+                                    <th>Semester</th>
+                                    <td><?php echo $current_school_year_semester;?></td>
+                                </tr>
+                                </tbody>
+                            </table> -->
+                        </div>
+
+
+                        <div class="form-details-enrolled" id="subjects-details">
+                             
+
+                            <?php
+
+                                if($checkEnrollmentEnrolled == false){
+                                    ?>
+                                        <!-- SELECTED SUBJECTS -->
+
+                                            <h3><?php echo $section_name; ?> Subjects</h3>
+                                            <span class="">
+                                                Section Capacity:
+                                                <?php 
+                                                    echo $updatedTotalStudent;
+                                                ?> / <?php echo $student_current_capacity;?>
+                                            </span>
+                                            <table>
+                                                <thead>
+                                                    <tr class="text-center"> 
+                                                        <th rowspan="2">ID</th>
+                                                        <th rowspan="2">Section</th>
+                                                        <th rowspan="2">Code</th>
+                                                        <th rowspan="2">Description</th>  
+                                                        <th rowspan="2">Type</th>
+                                                        <th rowspan="2">Unit</th>
+                                                </thead> 
+                                                <tbody>
+                                                    <?php
+
+                                                        # For Pending Grade 11 1st Semester Only
+                                                        $semester = "First";
+
+                                                        $transfereeSubjects = $con->prepare("SELECT 
+                                                            t1.is_transferee, t1.is_final,
+                                                            t1.student_subject_id as t2_student_subject_id, 
+                                                            t3.student_subject_id as t3_student_subject_id,
+                                                            t2.*,
+                                                            t4.program_section
+                                                            
+                                                            
+                                                            FROM student_subject as t1
+
+                                                            INNER JOIN subject as t2 ON t2.subject_id = t1.subject_id
+                                                            LEFT JOIN student_subject_grade as t3 ON t3.student_subject_id = t1.student_subject_id
+                                                            LEFT JOIN course as t4 ON t4.course_id = t2.course_id
+
+                                                            WHERE t1.student_id = :student_id
+                                                            AND t1.is_final = 0
+                                                            AND t1.school_year_id = :school_year_id
+                                                            AND t2.course_id = :course_id");
+
+
+                                                            $transfereeSubjects->bindValue(":student_id", $student_id);
+                                                            $transfereeSubjects->bindValue(":school_year_id", $school_year_id);
+                                                            $transfereeSubjects->bindValue(":course_id", $student_course_id);
+                                                            $transfereeSubjects->execute();
+
+                                                            $totalUnits = 0;
+
+                                                            if($transfereeSubjects != null){
+                                                                $applyTabIsAvailable = true;
+
+                                                                foreach ($transfereeSubjects as $key => $row) {
+
+                                                                    $subject_course_id = $row['course_id'];
+
+                                                                    $unit = $row['unit'];
+                                                                    $subject_id = $row['subject_id'];
+                                                                    $program_section = $row['program_section'];
+                                                                    // $program_section = "";
+
+                                                                    if($subject_course_id == $student_course_id){
+                                                                        array_push($my_course_subjects, $subject_id);
+                                                                    }
+
+                                                                    $subject_title = $row['subject_title'];
+                                                                    $course_id = $row['course_id'];
+                                                                    $subject_code = $row['subject_code'];
+                                                                    $subject_type = $row['subject_type'];
+                                                                    $semester = $row['semester'];
+                                                                    $course_level = $row['course_level'];
+                                                                    $is_transferee = $row['is_transferee'];
+
+                                                                    // $is_final = $row['is_final'];
+
+                                                                    $totalUnits += $unit;
+
+                                                                    $text = "";
+
+                                                                    $student_subject_id = $row['t2_student_subject_id'];
+                                                                
+                                                                    echo "
+                                                                        <tr class='text-center'>
+                                                                            <td>$subject_id</td>
+                                                                            <td>$program_section</td>
+                                                                            <td>$subject_code</td>
+                                                                            <td>$subject_title</td>
+                                                                            <td>$subject_type</td>
+                                                                            <td>$unit</td>
+                                                                        </tr>
+                                                                    ";
+                                                                }
+                                                            } 
+                                                    ?>
+                                                </tbody>
+                                                <?php
+                                                    if($totalUnits != 0){
+                                                        ?>
+                                                        <tr class="text-center">
+                                                            <td colspan="5"  style="font-weight:bold;text-align: right;" >Total Units</td>
+                                                            <td><?php echo $totalUnits;?></td>
+                                                        </tr> 
+                                                        <?php
+                                                    }
+                                                ?>
+                                                
+                                            </table>
+                                    <?php 
+                                }
+                            ?>
+                                
+
+
+                        </div>
+
+                        <div class="form-details-enrolled" id="subjects-details">
+
+                            <h3>Added Subjects</h3>
+                            <table>
+                                <thead>
+                                    <tr class="text-center"> 
+                                        <th rowspan="2">ID</th>
+                                        <th rowspan="2">Section</th>
+                                        <th rowspan="2">Code</th>
+                                        <th rowspan="2">Description</th>  
+                                        <th rowspan="2">Type</th>
+                                        <th rowspan="2">Unit</th>
+                                </thead> 
+                                    <tbody>
+                                        <?php 
+
+                                            // $addedSubjects = $subject->GetTransfereeAddedSubject($student_id,
+                                            //     $current_school_year_id, $selected_course_id);
+
+                                            $addedSubjects = $con->prepare("SELECT 
+                                                t1.is_transferee, t1.is_final,
+                                                t1.student_subject_id as t2_student_subject_id, 
+                                                t3.student_subject_id as t3_student_subject_id,
+
+                                                t4.program_section,
+                                                t2.* FROM student_subject as t1
+
+                                                INNER JOIN subject as t2 ON t2.subject_id = t1.subject_id
+                                                LEFT JOIN course as t4 ON t4.course_id = t2.course_id
+                                                LEFT JOIN student_subject_grade as t3 ON t3.student_subject_id = t1.student_subject_id
+
+                                                WHERE t1.student_id=:student_id
+                                                AND t1.is_final=0
+                                                AND t1.school_year_id=:school_year_id
+                                                AND t2.course_id!=:course_id
+
+                                                ");
+
+                                            $addedSubjects->bindValue(":student_id", $student_id);
+                                            $addedSubjects->bindValue(":school_year_id", $school_year_id);
+                                            $addedSubjects->bindValue(":course_id", $student_course_id);
+                                            $addedSubjects->execute();
+
+                                            if($addedSubjects->rowCount() > 0){
+
+                                                while($row = $addedSubjects->fetch(PDO::FETCH_ASSOC)){
+
+                                                    $subject_id = $row['subject_id'];
+                                                    $subject_code = $row['subject_code'];
+                                                    $subject_title = $row['subject_title'];
+                                                    $pre_requisite = $row['pre_requisite'];
+                                                    $subject_type = $row['subject_type'];
+                                                    $unit = $row['unit'];
+                                                    $course_level = $row['course_level'];
+                                                    $program_section = $row['program_section'];
+                                                    $program_section = $row['program_section'];
+                                                    $student_subject_id = $row['t2_student_subject_id'];
+
+                                                    echo "
+                                                        <tr class='text-center'>
+                                                            <td>$subject_id</td>
+                                                            <td>$program_section</td>
+                                                            <td>$subject_code</td>
+                                                            <td>$subject_title</td>
+                                                            <td>$unit</td>
+                                                            <td>$pre_requisite</td>
+                                                            <td>$subject_type</td>
+                                                            
+                                                        </tr>
+                                                    ";
+                                                }
+
+                                            }
+                                        ?>
+
+                                    </tbody>
+                                <?php
+                                    if($totalUnits != 0){
+                                        ?>
+                                        <tr class="text-center">
+                                            <td colspan="5"  style="font-weight:bold;text-align: right;" >Total Units</td>
+                                            <td><?php echo $totalUnits;?></td>
+                                        </tr> 
+                                        <?php
+                                    }
+                                ?>
+                                
+                            </table>
+
+                            
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="asd">
+                        <form action="" method="POST">
+
+                            <?php 
+                            
+                                if($checkIfCashierEvaluated == false && $checkIfRegisrarEvaluated){
+                                    echo "
+                                        <button type='button' class='btn btn-outline-primary'>Wait for Payment</button>
+                                    ";
+                                }
+                                else if($checkIfCashierEvaluated && $checkIfRegisrarEvaluated){
+                                    ?>
+                                        <button type="submit" name="inserted_transferee_subject_btn"
+                                            id="inserted_transferee_subject_btn"
+                                            onclick="return confirm('Are you sure you want to insert.?')"
+                                            class="button-style-success success">Approve Enrollment
+                                        </button>
+                                    <?php
+                                }
+
+                                $checkIfCashierEvaluated = $enrollment->CheckEnrollmentCashierApproved($student_id,
+                                    $student_course_id, $school_year_id);
+                                    
+                                    
+                                $checkIfRegistrarEvaluated = $enrollment->CheckEnrollmentRegistrarApproved($student_id,
+                                    $student_course_id, $school_year_id);
+
+                                if($isSectionFull == true 
+                                    && $checkEnrollmentEnrolled == false
+                                    // && $current_school_year_semester != "Second"
+                                    ){
+                                        echo "
+                                            <form method='POST'>
+                                                <button type='submit' name='section_full_btn' class='button-style-primary primary'>
+                                                    Move to Available Section
+                                                </button>
+                                            </form>
+                                        ";
+                                }
+                            ?>
+                        </form>
+                    </div>
+
+
+                </div>
+
+
+                <!--  -->
                 <div class="content">
                     <div class="form-header ">
                         <div class="header-content">
@@ -1062,7 +1568,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
 
                             <?php 
                                 if($checkEnrollmentEnrolled == true){
@@ -1377,7 +1882,8 @@
                                         </form>
                                     <?php
 
-                                }else if($checkEnrollmentEnrolled == false){
+                                }
+                                else if($checkEnrollmentEnrolled == false){
 
                                     ?>
                                         <!-- SELECTED SUBJECTS -->
@@ -1404,8 +1910,6 @@
                                                 </thead> 
                                                 <tbody>
                                                     <?php
-
-                                                        
 
                                                         # For Pending Grade 11 1st Semester Only
                                                         $semester = "First";
@@ -1435,64 +1939,64 @@
                                                             $transfereeSubjects->bindValue(":course_id", $student_course_id);
                                                             $transfereeSubjects->execute();
 
-                                                                $totalUnits = 0;
+                                                            $totalUnits = 0;
 
-                                                                if($transfereeSubjects != null){
-                                                                    $applyTabIsAvailable = true;
+                                                            if($transfereeSubjects != null){
+                                                                $applyTabIsAvailable = true;
 
-                                                                    foreach ($transfereeSubjects as $key => $row) {
+                                                                foreach ($transfereeSubjects as $key => $row) {
 
-                                                                        $subject_course_id = $row['course_id'];
+                                                                    $subject_course_id = $row['course_id'];
 
-                                                                        $unit = $row['unit'];
-                                                                        $subject_id = $row['subject_id'];
-                                                                        $program_section = $row['program_section'];
-                                                                        // $program_section = "";
+                                                                    $unit = $row['unit'];
+                                                                    $subject_id = $row['subject_id'];
+                                                                    $program_section = $row['program_section'];
+                                                                    // $program_section = "";
 
-                                                                        if($subject_course_id == $student_course_id){
-                                                                            array_push($my_course_subjects, $subject_id);
-                                                                        }
-
-                                                                        $subject_title = $row['subject_title'];
-                                                                        $course_id = $row['course_id'];
-                                                                        $subject_code = $row['subject_code'];
-                                                                        $subject_type = $row['subject_type'];
-                                                                        $semester = $row['semester'];
-                                                                        $course_level = $row['course_level'];
-                                                                        $is_transferee = $row['is_transferee'];
-
-                                                                        // $is_final = $row['is_final'];
-
-                                                                        $totalUnits += $unit;
-
-                                                                        $text = "";
-
-                                                                        $student_subject_id = $row['t2_student_subject_id'];
-                                                                    
-                                                                        echo "
-                                                                            <tr class='text-center'>
-                                                                                <td>$subject_id</td>
-                                                                                <td>$program_section</td>
-                                                                                <td>$subject_code</td>
-                                                                                <td>$subject_title</td>
-                                                                                <td>$subject_type</td>
-                                                                                <td>$unit</td>
-                                                                            </tr>
-                                                                        ";
+                                                                    if($subject_course_id == $student_course_id){
+                                                                        array_push($my_course_subjects, $subject_id);
                                                                     }
-                                                                } 
-                                                            ?>
-                                                        </tbody>
-                                                        <?php
-                                                            if($totalUnits != 0){
-                                                                ?>
-                                                                <tr class="text-center">
-                                                                    <td colspan="5"  style="font-weight:bold;text-align: right;" >Total Units</td>
-                                                                    <td><?php echo $totalUnits;?></td>
-                                                                </tr> 
-                                                                <?php
-                                                            }
+
+                                                                    $subject_title = $row['subject_title'];
+                                                                    $course_id = $row['course_id'];
+                                                                    $subject_code = $row['subject_code'];
+                                                                    $subject_type = $row['subject_type'];
+                                                                    $semester = $row['semester'];
+                                                                    $course_level = $row['course_level'];
+                                                                    $is_transferee = $row['is_transferee'];
+
+                                                                    // $is_final = $row['is_final'];
+
+                                                                    $totalUnits += $unit;
+
+                                                                    $text = "";
+
+                                                                    $student_subject_id = $row['t2_student_subject_id'];
+                                                                
+                                                                    echo "
+                                                                        <tr class='text-center'>
+                                                                            <td>$subject_id</td>
+                                                                            <td>$program_section</td>
+                                                                            <td>$subject_code</td>
+                                                                            <td>$subject_title</td>
+                                                                            <td>$subject_type</td>
+                                                                            <td>$unit</td>
+                                                                        </tr>
+                                                                    ";
+                                                                }
+                                                            } 
                                                     ?>
+                                                </tbody>
+                                                <?php
+                                                        if($totalUnits != 0){
+                                                            ?>
+                                                            <tr class="text-center">
+                                                                <td colspan="5"  style="font-weight:bold;text-align: right;" >Total Units</td>
+                                                                <td><?php echo $totalUnits;?></td>
+                                                            </tr> 
+                                                            <?php
+                                                        }
+                                                ?>
                                             </table>
                                         </div>
 
@@ -1587,7 +2091,7 @@
                                             ?>
                                         </div>
 
-                                        <!--  ADDED SUBJECTS -->
+                                        <!--  ADDED SUBJECTSX -->
                                         <div class="form-details">
 
                                             <h4 class="mb-3 text-muted">Added Subjects</h4>

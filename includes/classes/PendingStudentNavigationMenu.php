@@ -42,8 +42,11 @@
                 // $result .= $this->createNavigation("$registration",
                 //     "../assets/images/icons/history.png", "Registration");
 
-                $result .= $this->createNavigation("../logout.php", 
-                    "../assets/images/icons/logout.png", "Logout");
+                // $result .= $this->createNavigation("../logout.php", 
+                //     "../assets/images/icons/logout.png", "Logout");
+
+                $result .= $this->createNavigation("../student_logout.php", 
+                    "../assets/images/icons/logout.png", "Logout"); 
             }
 
             

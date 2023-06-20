@@ -77,10 +77,13 @@
                             ?>
 
                             <?php
+
+                                $url = "./process.php?new_student=true&step=3";
+
                                 if($isFinishedForm == true){
                                 echo "
                                     <div class='col-md-6'>
-                                        <a href='profile.php?view_form=true&id=<?php echo $pending_enrollees_id;?>'>
+                                        <a href='$url'>
                                             <button class='btn btn-outline-info'>View Form</button>
                                         </a>
                                     </div>
@@ -106,6 +109,9 @@
 
             if(isset($_GET['view_form']) && $_GET['view_form'] == "true"
                 && isset($_GET['id'])){
+
+
+                    
 
                     ?>
                         <div class="row col-md-12">

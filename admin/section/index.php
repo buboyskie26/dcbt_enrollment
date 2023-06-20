@@ -83,11 +83,12 @@
             }
 
             if($isSubjectCreated == true){
-
-                AdminUser::success("All section`s subjects has been populated within the semester.", "");
+                // AdminUser::success("All section`s subjects has been populated within the semester.", "");
             }
-        }else{
+        }
+        else{
             echo "program id not matched";
+            return;
         }
     }
 
@@ -359,7 +360,7 @@
   const populateBtns = document.querySelectorAll('.populate-btn');
 
   // loop through buttons and trigger click event
-  populateBtns.forEach(btn => {
-    btn.click();
-  });
+//   populateBtns.forEach(btn => {
+//     btn.click();
+//   });
 </script>

@@ -94,7 +94,6 @@
                 <a href="upload.php">
                     <img class="upload" src="../../assets/images/icons/upload.png">
                 </a>
-                
                 <?php
                     echo ButtonProvider::createAdminProfileNavigationButton($con, $registrarLoggedIn);
                 ?>
@@ -108,7 +107,7 @@
                 echo $nav->create();
             ?>
         </div>
-
+        
         <div id="mainSectionContainer">
             <div id="mainContentContainer">
                 

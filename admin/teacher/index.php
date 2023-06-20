@@ -8,11 +8,10 @@
 
     ?>
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="teachers.css">
+        <!-- <link rel="stylesheet" href="teachers.css"> -->
+        <link rel="stylesheet" href="../../admin/assets/css/teacher/index.css">
     </head>
+
     <?php
 
     $createUrl = base_url . "/create.php";
@@ -37,7 +36,7 @@
 
         <div class="content">
             <div class="dashboard">
-                <h3>Department</h3>
+                <h5>Department</h3>
 
                 <div class="form-box">
                     <div class="button-box">
@@ -51,6 +50,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+
+        <div class="content">
+            
             <div class="choices">
 
                 <div class="active" id="teacher-list-div">
@@ -65,80 +69,50 @@
 
             </div>
 
-            <section class="teacher-container" id="teacher">
-                <!--SHS Teacher List Page-->
-                <div class="teach" id="shs-teacher">
-                    <h1>Teachers</h1>
+            <main class="table">
+
+                <section class="table__header">
+                    <h1>Teacher</h1>
+                    
+                    <div class="input-group">
+                        <!-- <input type="search" placeholder="Search for student...">
+                        <img src="images/search.png" alt=""> -->
+                        <button class='button-style-success success'>
+                            <i class="fas fa-plus-circle"></i>  Add New
+                        </button>
+                    </div>
+                    <!-- <div class="export__file">
+                        <label for="export-file" class="export__file-btn" title="Export File"></label>
+                        <input type="checkbox" id="export-file">
+                        <div class="export__file-options">
+                            <label>Export As &nbsp; &#10140;</label>
+                            <label for="export-file" id="toPDF">PDF <img src="images/pdf.png" alt=""></label>
+                            <label for="export-file" id="toJSON">JSON <img src="images/json.png" alt=""></label>
+                            <label for="export-file" id="toCSV">CSV <img src="images/csv.png" alt=""></label>
+                            <label for="export-file" id="toEXCEL">EXCEL <img src="images/excel.png" alt=""></label>
+                        </div>
+                    </div> -->
+                </section>
+
+                <section class="table__body">
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Subject Load</th>
-                                <th>Status</th>
-                                <th>Data added</th>
-                                <th>Action</th>
+                                <th> Id <span class="icon-arrow">&UpArrow;</span></th>
+                                <th> Name. <span class="icon-arrow">&UpArrow;</span></th>
+                                <th> Subject Load <span class="icon-arrow">&UpArrow;</span></th>
+                                <th> Status <span class="icon-arrow">&UpArrow;</span></th>
+                                <th> Date Added <span class="icon-arrow">&UpArrow;</span></th>
+                                <th> Action <span class="icon-arrow">&UpArrow;</span></th>
                             </tr>
                         </thead>
-
                         <tbody>
-                            <?php 
-                                $teacher_status = "active";
-
-                                $sql = $con->prepare("SELECT * FROM teacher
-                                    WHERE teacher_status=:teacher_status
-                                    ");
-
-                                $sql->bindValue(":teacher_status", $teacher_status);
-                                $sql->execute();
-
-                                if($sql->rowCount() > 0){
-                                
-                                    while($row = $sql->fetch(PDO::FETCH_ASSOC)){
-
-                                        $fullName = $row['firstname']." ". $row['lastname']; 
-                                        $teacher_id = $row['teacher_id'];
-                                        $teacher_status = $row['teacher_status'];
-                                        $date_creation = $row['date_creation'];
-                                        
-                                        $subjectLoads = $schedule->GetTeacherSubjectLoad($teacher_id);
-
-                                        
-                                        $edit_url = directoryPath . "edit.php?id=$teacher_id";
-                                        $schedule_url = directoryPath . "profile_show.php?teacher_details=show&id=$teacher_id";
-
-                                        echo '<tr class="text-center">'; 
-                                                echo '<td>'.$teacher_id.'</td>';
-                                                echo '<td>
-                                                    <a style= "color: whitesmoke;" href="'.$schedule_url.'">
-                                                        '.$fullName.'
-                                                    </a>
-                                                </td>';
-                                                echo '<td>'.$subjectLoads.'</td>';
-                                                echo '<td>'.$teacher_status.'</td>';
-                                                echo '<td>'.$date_creation.'</td>';
-                                                echo 
-                                                '<td> 
-                                                    <a href="'.$edit_url.'">
-                                                        <button class="btn btn-sm btn-primary">Edit</button>
-                                                    </a>
-                                                </td>';
-                                        echo '</tr>';
-                                    }
-                                }
-                            ?>
-                        </tbody>   
-
+                        </tbody>
                     </table>
-                    <a href="<?php echo $createUrl; ?>">
-                        <button id="button-shs" class="add-new">+ Add new</button>
-                    </a>
-                </div>
-            
-            </section>
+                </section>
+            </main>
 
         </div>
-
     </div>
 
 <script>

@@ -606,9 +606,9 @@
         $registrar_side = $this->con->prepare("SELECT 
 
             t1.student_id, t1.cashier_evaluated,t1.registrar_evaluated,
-            t1.is_transferee,
+            t1.enrollment_date, t1.is_transferee,
 
-            t2.firstname,t2.username, t2.student_statusv2,
+            t2.firstname,t2.username, t2.student_statusv2,t2.student_unique_id,
             t2.lastname,t2.course_level,
             t2.course_id, t2.student_id as t2_student_id,
             t2.course_id, t2.course_level,t2.student_status, t2.admission_status,
@@ -652,6 +652,7 @@
         }
         return [];
     }
+
     public function OngoingEnrollment(){
 
         $sql = $this->con->prepare("SELECT t1.*, t4.*, t2.* 
@@ -680,6 +681,84 @@
 
         return [];
     }
+
+    public function UnionEnrollment(){
+
+        // $sql = $this->con->prepare("SELECT t1.*, t4.*, t2.* 
+        
+        //     FROM student as t1
+
+        //     INNER JOIN enrollment as t2 ON t2.student_id = t1.student_id
+        //     AND t2.course_id=t1.course_id
+
+        //     LEFT JOIN course as t3 ON t3.course_id = t1.course_id
+        //     LEFT JOIN program as t4 ON t4.program_id = t3.program_id
+
+        //     -- WHERE t1.student_status='Transferee'
+        //     WHERE t1.admission_status='Transferee'
+        //     AND t2.registrar_evaluated='no'
+        //     AND t2.enrollment_status='tentative'
+        //     AND t2.is_new_enrollee='no'
+        // ");
+
+        $sql = $this->con->prepare(" SELECT t1.firstname, t1.lastname, 
+
+            t1.student_statusv2,
+            t1.admission_status,
+            t2.enrollment_date AS submission_creation,
+            t3.program_id,
+            NULL AS student_status_pending,
+            t1.admission_status AS admission_status,
+            t1.is_tertiary AS student_classification,
+            NULL AS pending_enrollees_id,
+            t1.student_statusv2 AS student_statusv2,
+            t2.course_id AS student_course_id,
+            t1.student_id AS student_id,
+            t1.student_unique_id AS student_unique_id
+            
+
+            -- O.S QUERY.
+
+            FROM student as t1
+            INNER JOIN enrollment as t2 ON t2.student_id = t1.student_id
+            AND t2.course_id = t1.course_id
+
+            LEFT JOIN course as t3 ON t3.course_id = t1.course_id
+            LEFT JOIN program as t4 ON t4.program_id = t3.program_id
+            WHERE t1.admission_status = 'Transferee'
+
+            AND t2.registrar_evaluated = 'no'
+            AND t2.enrollment_status = 'tentative'
+            AND t2.is_new_enrollee = 'no'
+
+            UNION
+
+            SELECT t1.firstname, t1.lastname, NULL, NULL,
+            t1.date_creation AS submission_creation,
+            t1.program_id,
+            t1.student_status AS student_status_pending,
+            NULL AS admission_status,
+            NULL AS student_classification,
+            t1.pending_enrollees_id,
+            NULL AS student_statusv2,
+            NULL AS student_course_id,
+            NULL AS student_id,
+            NULL AS student_unique_id
+
+
+            FROM pending_enrollees as t1
+            LEFT JOIN program as t2 ON t2.program_id = t1.program_id
+            WHERE t1.student_status != 'APPROVED'
+            AND t1.is_finished = 1
+        ");
+
+        $sql->execute();
+        if($sql->rowCount() > 0){
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        return [];
+    }
     public function WaitingApprovalEnrollment($current_school_year_id){
 
         $default_shs_course_level = 11;
@@ -692,9 +771,9 @@
         $registrar_side = $this->con->prepare("SELECT 
 
             t1.student_id, t1.cashier_evaluated,t1.registrar_evaluated,
-            t1.is_transferee,
+            t1.is_transferee, t1.enrollment_approve,
 
-            t2.firstname,t2.username,
+            t2.firstname,t2.username, t2.student_unique_id,
             t2.lastname,t2.course_level,
             t2.admission_status,t2.student_statusv2,
             t2.course_id, t2.student_id as t2_student_id,
@@ -738,6 +817,7 @@
         }
         return [];
     }
+
     public function EnrolledStudentsWithinSYSemester($current_school_year_id){
 
         $enrollment_status = "enrolled";
@@ -775,6 +855,47 @@
     }
 
 
+    public function EnrolledStudentsWithinSYSemesterx($current_school_year_id){
+
+        $enrollment_status = "enrolled";
+        $registrar_evaluated = "yes";
+        $cashier_evaluated = "yes";
+
+        $sql = $this->con->prepare("SELECT t2.*, t3.program_section 
+        
+            FROM enrollment as t1
+
+            INNER JOIN student as t2 ON t2.student_id = t1.student_id
+
+            LEFT JOIN course as t3 ON t3.course_id = t2.course_id
+
+            -- WHERE school_year_id=:school_year_id
+            WHERE enrollment_status=:enrollment_status
+            AND registrar_evaluated=:registrar_evaluated
+            AND cashier_evaluated=:cashier_evaluated
+            ");
+
+        // $sql->bindValue(":school_year_id", $current_school_year_id);
+        $sql->bindValue(":enrollment_status", $enrollment_status);
+        $sql->bindValue(":registrar_evaluated", $registrar_evaluated);
+        $sql->bindValue(":cashier_evaluated", $cashier_evaluated);
+        $sql->execute();
+
+        // $sql->bindValue(":school_year_id", $current_school_year_id);
+        $sql->bindValue(":enrollment_status", $enrollment_status);
+        $sql->bindValue(":registrar_evaluated", $registrar_evaluated);
+        $sql->bindValue(":cashier_evaluated", $cashier_evaluated);
+        $sql->execute();
+        if($sql->rowCount() > 0){
+
+
+            $queries = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $queries;
+        }
+        return [];
+
+
+    }
 }
 
 

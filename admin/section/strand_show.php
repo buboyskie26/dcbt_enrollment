@@ -49,6 +49,7 @@
                             <input type="hidden" value="<?php echo $course_id;?>" id="course_id">
                             <select name="select_school_year_id" id="select_school_year_id" class="form-select" aria-label="School Year Term">
                              <?php
+                             
                                 $query = $con->prepare("SELECT DISTINCT e.school_year_id, sy.period
                                     FROM enrollment e
 

@@ -42,8 +42,8 @@
             <div class="column">
                 <div class="header">
                     <!-- <img src="assets/images/icons/VideoTubeLogo.png" title="logo" alt="Site logo"> -->
-                    <h3>Cashier Sign In</h3>
-                    <span>to Enrollment</span>
+                                     <h3 class="text-center text-muted">Cashier</h3>
+
                 </div>
 
                 <div class="buttons">

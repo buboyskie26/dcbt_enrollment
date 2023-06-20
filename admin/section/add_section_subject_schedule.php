@@ -2,6 +2,7 @@
 
     include('../registrar_enrollment_header.php');
     include('../../enrollment/classes/StudentEnroll.php');
+    include('../../admin/classes/Subject.php');
     require_once('../../admin/classes/AdminUser.php');
 
     if(!AdminUser::IsRegistrarAuthenticated()){

@@ -64,7 +64,7 @@
             $course_section_subjects = $studentEnroll->GetStudentsStrandSubjectsPerLevelSemester($student_username);
  
 
-            print_r($course_section_subjects);
+            // print_r($course_section_subjects);
             
             $program_id = $row['program_id'];
             $program = $con->prepare("SELECT acronym FROM program

@@ -78,18 +78,17 @@
         }
     } 
 ?>
-
 <html>
     <body>
         <div class="signInContainer">
-            <div class="column">
+            <div style="width: 520px;" class="column">
                 <div class="header">
                     <!-- <img src="assets/images/icons/VideoTubeLogo.png" title="logo" alt="Site logo"> -->
-                    <h3 class="text-center text-muted">Student Register</h3>
-                    <span>To create an applicant account, provide your basic information first which ill be used to verify your email address.</span>
+                    <h3 class="text-center text-muted">Pre-Enrollment Register</h3>
+                    <span style="font-size: 15px;">To create an applicant account, provide your basic information first which ill be used to verify your email address.</span>
                 </div>
              
-                <div class="loginForm">
+                <div class="loginForm" style="margin-bottom: 15px; padding-bottom: 15px;">
                     <form method="POST">
                         <label for="">Firstname</label>
                         <input  type="text" name="pending_firstname" placeholder="Firstname" autocomplete="off">
@@ -104,7 +103,12 @@
                         <label for="">Password</label>
                         <input type="password" name="pending_password" value="123456" placeholder="Password" autocomplete="off">
 
-                        <div class="row">
+                        <div style="margin-top:10px; display: flex;flex-direction: center;align-items: center;justify-content: center;" class="register_div">
+                            <button style="width: 180px;" type="submit" name="pending_submit_btn" class="btn btn-success">Register</button>
+                        </div>
+
+                        <!-- <div class="row">
+                            
                             <div class="col-md-3">
                                 <button type="submit" name="pending_submit_btn" class="btn btn-success">Register</button>
                             </div>
@@ -118,7 +122,7 @@
                                     <button type="button" class="btn btn-primary">Resend</button>
                                 </a>
                             </div>
-                        </div>
+                        </div> -->
 
                     </form>
                 </div>

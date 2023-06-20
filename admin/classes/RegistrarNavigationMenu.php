@@ -29,7 +29,8 @@
             $school_year_url = $base_url . '/school_year/indexv2.php';
             $admission_url = $base_url . '/admission/evaluation.php';
             $account_url = $base_url . '/account/index.php';
-            $enrollment_url = $base_url . '/enrollment/index.php';
+            // $enrollment_url = $base_url . '/enrollment/index.php';
+            $enrollment_url = $base_url . '/enrollment/history.php';
 
             $enrollees_url = $base_url . '/enrollees/index.php';
             $transferee_url = $base_url . '/enrollees/transfee_enrollees.php';
@@ -41,6 +42,9 @@
 
 
             $current_url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+            // $result = $this->createNavigationv2("$admission_url",
+            //     "fas", "Admission");
 
             $result = $this->createNavigation("$admission_url",
                 "../assets/images/icons/home.png", "Admission");
@@ -54,8 +58,8 @@
             $result .= $this->createNavigation("$teacher_url",
                 "../assets/images/icons/home.png", "Teacher");
 
-            $result .= $this->createNavigation("$courses_url",
-                "../assets/images/icons/home.png", "Courses");
+            // $result .= $this->createNavigation("$courses_url",
+            //     "../assets/images/icons/home.png", "Courses");
            
 
             $result .= $this->createNavigation("$enrollment_url",
@@ -93,6 +97,16 @@
                 <div class='navigationItem'>
                     <a href='$link'>
                         <img src='$profile'>
+                        <span>$text</span>
+                    </a>
+                </div>
+            ";
+        }
+        public function createNavigationv2($link, $profile, $text){
+            return "
+                <div class='navigationItem'>
+                    <a href='$link'>
+                        <i class='$profile'></i>
                         <span>$text</span>
                     </a>
                 </div>

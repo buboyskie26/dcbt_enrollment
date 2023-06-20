@@ -21,7 +21,7 @@
         $strand_name = $section->GetAcronymByProgramId($program_id);
         $createUrl = directoryPath . "strand_subject_add.php?id=$program_id";
 
-        $subject = new Subject($con, $registrarLoggedIn);
+        $subject = new Subject($con, $registrarLoggedIn, null);
         $form = $subject->createForm();
         $selectSubjectTitle = $subject->SelectSubjectTitle();
         $selectSubjectEdit = $subject->SelectSubjectTitleEdit();
@@ -34,11 +34,11 @@
                     <h3 class="text-center"><?php echo $strand_name;?> Subjects</h3>
                     <div class="row justify-content-end">
 
-                        <a class="mb-2" href="<?php echo $createUrl?>">
+                        <!-- <a class="mb-2" href="<?php echo $createUrl?>">
                             <button class="btn btn-sm btn-success">Attach Subject</button>
-                        </a>    
+                        </a>     -->
                        
-                        <button type="button" 
+                        <button style="width: 150px; margin-bottom: 15px;" type="button" 
                             data-bs-target="#subjectAddModal" 
                             data-bs-toggle="modal"
                             data-program-id="<?php echo intval($program_id); ?>"

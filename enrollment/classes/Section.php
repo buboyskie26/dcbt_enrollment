@@ -255,32 +255,55 @@
         
             // Based on the enrollment.
 
-            $query = $this->con->prepare("SELECT t1.enrollment_id, 
-                t1.course_id,
-                 t1.student_id
-                -- t1.school_year_id 
+            // $query = $this->con->prepare("SELECT t1.enrollment_id, 
+            //     t1.course_id,
+            //      t1.student_id
+            //     -- t1.school_year_id 
                 
-                FROM enrollment as t1
+            //     FROM enrollment as t1
 
-                INNER JOIN course as t2 ON t2.course_id = t1.course_id
+            //     INNER JOIN course as t2 ON t2.course_id = t1.course_id
 
-                WHERE t1.course_id=:course_id
-                -- AND (t1.enrollment_status=:enrollment_status
-                --     OR t1.enrollment_status=:enrollment_status2)
+            //     WHERE t1.course_id=:course_id
+            //     -- AND (t1.enrollment_status=:enrollment_status
+            //     --     OR t1.enrollment_status=:enrollment_status2)
 
-                AND t1.enrollment_status=:enrollment_status
-                AND t1.school_year_id=:school_year_id
-                AND t2.active=:active
-                ");
+            //     AND t1.enrollment_status=:enrollment_status
+            //     AND t1.school_year_id=:school_year_id
+            //     AND t2.active=:active
+            //     ");
 
-            $query->bindValue(":course_id", $course_id);
-            $query->bindValue(":enrollment_status", "enrolled");
-            // $query->bindValue(":enrollment_status2", "enrolled");
-            $query->bindValue(":school_year_id", $current_school_year_id);
-            $query->bindValue(":active", "yes");
-            $query->execute();
+            // $query->bindValue(":course_id", $course_id);
+            // $query->bindValue(":enrollment_status", "enrolled");
+            // // $query->bindValue(":enrollment_status2", "enrolled");
+            // $query->bindValue(":school_year_id", $current_school_year_id);
+            // $query->bindValue(":active", "yes");
+            // $query->execute();
 
-            return $query->rowCount();
+            // return $query->rowCount();
+
+            $sql = $this->con->prepare("SELECT 
+                            
+                    t3.program_id, t2.student_id,
+                    t2.student_status,t2.firstname, t2.lastname 
+                    
+                    FROM enrollment as t1
+            
+                    LEFT JOIN student as t2 ON t2.student_id=t1.student_id
+                    LEFT JOIN course as t3 ON t3.course_id=t1.course_id
+
+
+                    WHERE t1.course_id=:course_id
+                    AND t1.school_year_id=:school_year_id
+                    AND t1.enrollment_status=:enrollment_status
+            ");
+
+            $sql->bindValue(":course_id", $course_id);
+            $sql->bindValue(":school_year_id", $current_school_year_id);
+            $sql->bindValue(":enrollment_status", "enrolled");
+            $sql->execute();
+            return $sql->rowCount();
+
         }
 
         public function GetSectionTotalSubjects($course_id){
@@ -463,6 +486,20 @@
                 return $sql->fetchColumn();
             
             return "N/A";
+        }
+
+        public function GetDepartmentIdByProgramId($program_id){
+
+            $sql = $this->con->prepare("SELECT department_id FROM program
+                WHERE program_id=:program_id");
+                
+            $sql->bindValue(":program_id", $program_id);
+            $sql->execute();
+
+            if($sql->rowCount() > 0)
+                return $sql->fetchColumn();
+            
+            return -1;
         }
 
         public function GetTrackByProgramId($program_id){

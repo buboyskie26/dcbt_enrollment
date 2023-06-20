@@ -287,7 +287,7 @@
         public function UpdatePendingNewStep2($pending_enrollees_id, $firstname, 
             $middle_name, $lastName, $civil_status, $nationality, $sex,
             $birthday, $birthplace, $religion, $address,
-                $contact_number, $email, $age, $lrn) {
+                $contact_number, $email, $age, $lrn, $suffix) {
                 
                 $query = $this->con->prepare("UPDATE pending_enrollees
                         SET firstname=:firstname,
@@ -303,29 +303,31 @@
                             contact_number=:contact_number,
                             email=:email,
                             age=:age,
-                            lrn=:lrn
+                            lrn=:lrn,
+                            suffix=:suffix
+                            
                         WHERE pending_enrollees_id=:pending_enrollees_id");
 
-                $query->bindValue(":pending_enrollees_id", $pending_enrollees_id);
-                $query->bindValue(":firstname", $firstname);
-                $query->bindValue(":middle_name", $middle_name);
-                $query->bindValue(":lastName", $lastName);
-                $query->bindValue(":civil_status", $civil_status);
-                $query->bindValue(":nationality", $nationality);
-                $query->bindValue(":sex", $sex);
-                $query->bindValue(":birthday", $birthday);
-                $query->bindValue(":birthplace", $birthplace);
-                $query->bindValue(":religion", $religion);
-                $query->bindValue(":address", $address);
-                $query->bindValue(":contact_number", $contact_number);
-                $query->bindValue(":email", $email);
-                $query->bindValue(":age", $age);
-                $query->bindValue(":lrn", $lrn);
+            $query->bindValue(":pending_enrollees_id", $pending_enrollees_id);
+            $query->bindValue(":firstname", $firstname);
+            $query->bindValue(":middle_name", $middle_name);
+            $query->bindValue(":lastName", $lastName);
+            $query->bindValue(":civil_status", $civil_status);
+            $query->bindValue(":nationality", $nationality);
+            $query->bindValue(":sex", $sex);
+            $query->bindValue(":birthday", $birthday);
+            $query->bindValue(":birthplace", $birthplace);
+            $query->bindValue(":religion", $religion);
+            $query->bindValue(":address", $address);
+            $query->bindValue(":contact_number", $contact_number);
+            $query->bindValue(":email", $email);
+            $query->bindValue(":age", $age);
+            $query->bindValue(":lrn", $lrn);
+            $query->bindValue(":suffix", $suffix);
 
-                $execute = $query->execute();
+            $execute = $query->execute();
 
-                return $execute;
-            
+            return $execute;
         }
 
 
@@ -458,19 +460,22 @@
 
 
         public function CreateParentData($pending_enrollees_id, $fname,
-            $lname, $mi, $contact_number){
+            $lname, $mi, $contact_number, $parent_email, $parent_occupation, $parent_suffix){
 
             if($this->CheckParentExists($pending_enrollees_id) == false){
 
                 $query = $this->con->prepare("INSERT INTO parent 
-                    (pending_enrollees_id, firstname, lastname, middle_name, contact_number) 
-                    VALUES (:pending_enrollees_id, :firstname, :lastname, :middle_name, :contact_number)");
+                    (pending_enrollees_id, firstname, lastname, middle_name, contact_number, email, suffix, occupation) 
+                    VALUES (:pending_enrollees_id, :firstname, :lastname, :middle_name, :contact_number, :email, :suffix, :occupation)");
                 
                 $query->bindValue(":pending_enrollees_id", $pending_enrollees_id);
                 $query->bindValue(":firstname", $fname);
                 $query->bindValue(":middle_name", $mi);
                 $query->bindValue(":lastname", $lname);
                 $query->bindValue(":contact_number", $contact_number);
+                $query->bindValue(":email", $parent_email);
+                $query->bindValue(":occupation", $parent_occupation);
+                $query->bindValue(":suffix", $parent_suffix);
 
                 return $query->execute();
             }else{

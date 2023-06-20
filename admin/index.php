@@ -1,6 +1,7 @@
+
 <?php  
     require_once('../admin/adminHeader.php');
-    
+
 ?>
 
 <div class="column">

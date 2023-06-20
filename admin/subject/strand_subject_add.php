@@ -10,7 +10,7 @@
         exit();
     }
 
-    $subject = new Subject($con, $registrarLoggedIn);
+    $subject = new Subject($con, $registrarLoggedIn, null);
     $form = $subject->createForm();
     $selectSubjectTitle = $subject->SelectSubjectTitle();
 

@@ -26,7 +26,7 @@
 <body>
     <div class="row">
         <div class="col-lg-10 offset-md-1">
-                <?php include "login_enrollment.php"; ?> 
+            <?php include "login_enrollment.php"; ?> 
         <div>
     </div>
 </body>

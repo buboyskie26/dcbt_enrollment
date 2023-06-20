@@ -15,7 +15,7 @@
 
 <div class="row col-md-12">
             <div class="col-md-10 offset-md-1">
-            <h3 class="text-center">SHS Subjects</h3>
+            <h3 class="text-center">Subject List</h3>
             <div class="row justify-content-end">
                 <a class="mb-2" href="<?php echo $templateUrl?>">
                     <button class="btn btn btn-success">Add New</button>

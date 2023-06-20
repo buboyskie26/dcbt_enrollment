@@ -35,6 +35,7 @@
             
             // Search to become dynamic to avoid possible redirect error
             // when it was launch in the internet.
+            
             $current_url = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             // header("Location: " . $current_url . "profile.php");
 
@@ -46,7 +47,6 @@
             // echo $_SERVER['REQUEST_URI'];
 
             $school_year_url = $base_url . '/school_year/index.php';
-
 
             $result = $this->createNavigation("$school_year_url",
                 "../../assets/images/icons/home.png", "School Year");

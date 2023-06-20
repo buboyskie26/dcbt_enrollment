@@ -46,9 +46,80 @@
                 width: 100%;
                 height: auto;
             }
+            .step1-top {
+                    display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                padding: 1px 30px;
+                width: 100%;
+                height: auto;
+            }
+            .steps{
+                height: 35px;
+                display: flex;
+                justify-content: center;
+                display: flex;
+                align-items: center;
+            }
+            .step{
+                font-size: 16px;
+            }
+
+            .info-box {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 0px;
+                width: 100%;
+                height: auto;
+            }
+
+            .info-1,
+            .info-2,
+            .info-3,
+            .info-4,
+            .info-5,
+            .info-6,
+            .info-7 {
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+                padding: 10px;
+                gap: 10px;
+                width: 100%;
+                height: auto;
+            }
+
+            .info-1 input,
+            .info-2 input,
+            .info-3 input,
+            .info-4 input,
+            .info-5 input,
+            .info-6 input,
+            .info-7 input {
+                width: 100%;
+                text-align: center;
+                border: 1px solid #D9D9D9;
+                border-radius: 5px;
+            }
+
+            .enrollment-details {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                padding: 0px;
+            }
+            
+
+ 
+
         </style>
     <?php
     $enroll = new StudentEnroll($con);
+    $section = new Section($con, null);
 
     $school_year_obj = $enroll->GetActiveSchoolYearAndSemester();
 
@@ -138,8 +209,13 @@
             $contact_number = empty($row['contact_number']) ? '' : $row['contact_number'];
             $email = empty($row['email']) ? '' : $row['email'];
             $birthplace = empty($row['birthplace']) ? '' : $row['birthplace'];
+            $suffix = empty($row['suffix']) ? '' : $row['suffix'];
+            
+            $is_finished = $row['is_finished'];
 
+            
 
+                
             if(isset($_GET['new_student']) && $_GET['new_student'] == "true"){
 
                 if(isset($_GET['step']) && $_GET['step'] == 1){
@@ -171,13 +247,18 @@
                     }
 
                     ?>
+
+                         
                         <div class="row col-md-12">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="card-header">
-                                        <h3 class="text-center">STEP 1 ~ Prefered Course</h3>
-                                        <h5 class="mb-3">New Student Form</h5>
-                                        <span class="">S.Y <?php echo $current_term;?></span>
+
+                                        <div class="step1-top">
+                                            <h3 style="color: #EA4040;" class="mb-3">New Student Form</h3>
+                                            <span class="">S.Y <?php echo $current_term;?></span>
+                                        </div>
+                                    </div>
 
                                         <div class="mt-2 progress-bar">
                                             <div class="steps">
@@ -188,7 +269,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="container mb-4">
                                             <form method="POST">
                                                 <div class="row">
                                                     <span>Admission Type</span>
@@ -205,7 +285,7 @@
                                                 </div>
 
                                                 <div class="row mt-4">
-                                                    <span>Student Type</span>
+                                                    <span>Grade Level</span>
                                                     <div class="col-md-6">
                                                         <label for="">College</label>
                                                         <input required  type="radio" name="student_type"
@@ -226,13 +306,12 @@
                                                
                                                 <button type="submit" name="new_step1_btn" class="mt-2 btn btn-primary">Proceed</button>
                                             </form>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     <?php
                 }
+
                 if(isset($_GET['step']) && $_GET['step'] == 2){
 
                     $get_parent = $con->prepare("SELECT * FROM parent
@@ -246,6 +325,9 @@
                     $parent_lastname = "";
                     $parent_middle_name = "";
                     $parent_contact_number = "";
+                    $parent_email = "";
+                    $parent_occupation = "";
+                    $parent_suffix = "";
 
                     $hasParentData = false;
 
@@ -258,52 +340,119 @@
                         $parent_lastname = $rowParnet['lastname'];
                         $parent_middle_name = $rowParnet['middle_name'];
                         $parent_contact_number = $rowParnet['contact_number'];
-
+                        $parent_occupation = $rowParnet['occupation'];
+                        $parent_suffix = $rowParnet['suffix'];
                         // echo $parent_id;
                         $hasParentData = true;
                     }
 
                     if(isset($_POST['new_step2_btn'])){
 
-                        $firstname = $_POST['firstname'];
-                        $middle_name = $_POST['middle_name'];
-                        $lastName = $_POST['lastname'];
-                        $civil_status = $_POST['civil_status'];
-                        $nationality = $_POST['nationality'];
-                        $sex = $_POST['sex'];
-                        $birthday = $_POST['birthday'];
-                        $birthplace = $_POST['birthplace'];
-                        $religion = $_POST['religion'];
-                        $address = $_POST['address'];
-                        $contact_number = $_POST['contact_number'];
-                        $email = $_POST['email'];
-                        $lrn = $_POST['lrn'];
+                        // $firstname = $_POST['firstname'];
+                        // $middle_name = $_POST['middle_name'];
+                        // $lastName = $_POST['lastname'];
+                        // $civil_status = $_POST['civil_status'];
+                        // $nationality = $_POST['nationality'];
+                        // $sex = $_POST['sex'];
+                        // $birthday = $_POST['birthday'];
+                        // $birthplace = $_POST['birthplace'];
+                        // $religion = $_POST['religion'];
+                        // $address = $_POST['address'];
+                        // $contact_number = $_POST['contact_number'];
+                        // $email = $_POST['email'];
+                        // $lrn = $_POST['lrn'];
+                        // $suffix = $_POST['suffix'];
+
+                        $firstname = isset($_POST['firstname']) ? $_POST['firstname'] : 'None';
+                        $middle_name = isset($_POST['middle_name']) ? $_POST['middle_name'] : 'None';
+                        $lastName = isset($_POST['lastname']) ? $_POST['lastname'] : 'None';
+                        $civil_status = isset($_POST['civil_status']) ? $_POST['civil_status'] : 'None';
+                        $nationality = isset($_POST['nationality']) ? $_POST['nationality'] : 'None';
+                        $sex = isset($_POST['sex']) ? $_POST['sex'] : 'None';
+                        $birthday = isset($_POST['birthday']) ? $_POST['birthday'] : 'None';
+                        $birthplace = isset($_POST['birthplace']) ? $_POST['birthplace'] : 'None';
+                        $religion = isset($_POST['religion']) ? $_POST['religion'] : 'None';
+                        $address = isset($_POST['address']) ? $_POST['address'] : 'None';
+                        $contact_number = isset($_POST['contact_number']) ? $_POST['contact_number'] : 'None';
+                        $email = isset($_POST['email']) ? $_POST['email'] : '';
+                        $lrn = isset($_POST['lrn']) ? $_POST['lrn'] : '';
+                        $suffix = isset($_POST['suffix']) ? $_POST['suffix'] : 'None';
+
 
                         $age = $pending->CalculateAge($birthday);
 
-                        # If there`s a present data
-                        # it just need to update not to create another.
+
+                        // echo "firstname: " . $firstname . "<br>";
+                        // echo "middle_name: " . $middle_name . "<br>";
+                        // echo "lastName: " . $lastName . "<br>";
+                        // echo "civil_status: " . $civil_status . "<br>";
+                        // echo "nationality: " . $nationality . "<br>";
+                        // echo "sex: " . $sex . "<br>";
+                        // echo "birthday: " . $birthday . "<br>";
+                        // echo "birthplace: " . $birthplace . "<br>";
+                        // echo "religion: " . $religion . "<br>";
+                        // echo "address: " . $address . "<br>";
+                        // echo "contact_number: " . $contact_number . "<br>";
+                        // echo "email: " . $email . "<br>";
+                        // echo "lrn: " . $lrn . "<br>";
+                        // echo "suffix: " . $suffix . "<br>";
+                        // echo "age: " . $age . "<br>";
+
+                        // # If there`s a present data
+                        // # it just need to update not to create another.
+
 
                         $parent_firstname = isset($_POST['parent_firstname']) ? $_POST['parent_firstname'] : '';
                         $parent_middle_name = isset($_POST['parent_middle_name']) ? $_POST['parent_middle_name'] : '';
                         $parent_lastname = isset($_POST['parent_lastname']) ? $_POST['parent_lastname'] : '';
                         $parent_contact_number = isset($_POST['parent_contact_number']) ? $_POST['parent_contact_number'] : '';
+                        $parent_email = isset($_POST['parent_email']) ? $_POST['parent_email'] : '';
+                        $parent_occupation = isset($_POST['parent_occupation']) ? $_POST['parent_occupation'] : '';
+                        $parent_suffix = isset($_POST['parent_suffix']) ? $_POST['parent_suffix'] : '';
+
+
+
+                        // echo "parent_firstname: " . $parent_firstname . "<br>";
+                        // echo "parent_middle_name: " . $parent_middle_name . "<br>";
+                        // echo "parent_lastname: " . $parent_lastname . "<br>";
+                        // echo "parent_email: " . $parent_email . "<br>";
+                        // echo "parent_occupation: " . $parent_occupation . "<br>";
+                        // echo "parent_suffix: " . $parent_suffix . "<br>";
+
+                        // $guardian_form_input = $pending->CreateParentData($pending_enrollees_id, 
+                        //     $parent_firstname, $parent_middle_name,
+                        //     $parent_lastname, $parent_contact_number, $parent_email, $parent_occupation, $parent_suffix);
+                        
+                        // if($guardian_form_input == true){
+                        //     AdminUser::error("Parent has already been created. 
+                        //         Form should be in update state.", "");
+                        // }else{
+                        //     echo "something went wrong";
+                        // }
 
                         $wasSuccess = $pending->UpdatePendingNewStep2($pending_enrollees_id, $firstname, $middle_name,
                                 $lastName, $civil_status, $nationality, $sex, $birthday,
-                                $birthplace, $religion, $address, $contact_number, $email, $age, $lrn);
-                           
+                                $birthplace, $religion, $address, $contact_number, $email, $age, $lrn, $suffix);
+
+                        if($wasSuccess){
+                            AdminUser::success("STEP 2 Completed", "");
+                            
+                        }
 
                         if($hasParentData == false){
 
-                            
                             $guardian_form_input = $pending->CreateParentData($pending_enrollees_id, 
-                                $parent_firstname, $parent_middle_name,
-                                $parent_lastname, $parent_contact_number);
+                            $parent_firstname, $parent_middle_name,
+                            $parent_lastname, $parent_contact_number, $parent_email, $parent_occupation, $parent_suffix);
+                            
+                            // $guardian_form_input = $pending->CreateParentData($pending_enrollees_id, 
+                            //     $parent_firstname, $parent_middle_name,
+                            //     $parent_lastname, $parent_contact_number);
                             
                             if($guardian_form_input == false){
                                 AdminUser::error("Parent has already been created. Form should be in update state.", "");
                             }
+
                             if($wasSuccess && $guardian_form_input){
 
                                 AdminUser::success("STEP 2 Completed",
@@ -318,33 +467,152 @@
 
                         else if($wasSuccess == true && $hasParentData == true){
 
-                                $parentUpdateSuccess = $pending->UpdateParentData($parent_id,
-                                    $parent_firstname, $parent_middle_name,
-                                    $parent_lastname, $parent_contact_number);
+                            $parentUpdateSuccess = $pending->UpdateParentData($parent_id,
+                                $parent_firstname, $parent_middle_name,
+                                $parent_lastname, $parent_contact_number);
 
-                                $wasCompleted = $pending->CheckAllStepsComplete($pending_enrollees_id);
+                            $wasCompleted = $pending->CheckAllStepsComplete($pending_enrollees_id);
 
                             if($wasCompleted == true){
-
-                                    AdminUser::success("STEP 2 Modification Success",
-                                        "process.php?new_student=true&step=3");
-                                    exit();
-
+                                AdminUser::success("STEP 2 Modification Success",
+                                    "process.php?new_student=true&step=3");
+                                exit();
                                 }else{
                                     AdminUser::error("All fields must be filled-up", "");
                             }
                         }
-
                     }
                     ?>
                         <div class="row col-md-12">
+
                             <div class="card">
                                 <div class="card-body">
                                     <div class="card-header">
 
-                                        <h4 class="text-center">STEP 2 ~ Personal Information<h4>
-                                        <h5 class="mb-3">New Student Form</h5>
-                                        <span class="">S.Y <?php echo $current_term;?></span>
+                                        <div class="step1-top">
+                                            <h3 style="color: #EA4040;" class="mb-3">New Student Form</h3>
+                                            <span class="">S.Y <?php echo $current_term;?></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-2 progress-bar">
+                                        <div class="steps">
+                                            <div class="step active">Preferred Course/Strand</div>
+                                            <div class="step active">Personal Information</div>
+                                            <div class="step">Validate Details</div>
+                                            <div class="step">Finished</div>
+                                        </div>
+                                    </div>
+
+                                    <form method="POST">
+                                        <div class="student-info">
+                                            <h6 style="color: #EA4040;">Student information</h6>
+
+                                            <div class="info-1">
+                                                <label for="name"> Name </label>
+                                                <input type="text" required name="lastname" id="lastName" required value="<?php echo ($lastname != "") ? $lastname : ''; ?>" placeholder="Last name">
+                                                <input type="text" required name="firstname" id="firstName" value="<?php echo ($firstname != "") ? $firstname : ''; ?>" placeholder="First name">
+                                                <input type="text" name="middle_name" id="middleName" value="<?php echo ($middle_name != "") ? $middle_name : ''; ?>" placeholder="Middle name">
+                                                <input type="text" name="suffix" id="suffixName" value="<?php echo ($suffix != "") ? $suffix : ''; ?>" placeholder="Suffix name">
+                                            </div>
+                                            <div class="info-2">
+                                                <label for="status"> Status </label>
+                                                <div class="selection-box-1">
+                                                    <select id="status" name="civil_status" class="form-control" required>
+                                                        <option value="Single"<?php echo ($civil_status == "Single") ? " selected" : ""; ?>>Single</option>
+                                                        <option value="Married"<?php echo ($civil_status == "Married") ? " selected" : ""; ?>>Married</option>
+                                                        <option value="Divorced"<?php echo ($civil_status == "Divorced") ? " selected" : ""; ?>>Divorced</option>
+                                                        <option value="Widowed"<?php echo ($civil_status == "Widowed") ? " selected" : ""; ?>>Widowed</option>
+                                                    </select>
+                                                </div>
+                                                <label for="citizenship">Citizenship</label>
+                                                <input style="width: 220px;" type="text" name="nationality" 
+                                                    required value="<?php echo ($nationality != "") ? $nationality : ''; ?>"id="nationality">
+
+                                                <label for="gender"> Gender </label>
+                                                <div class="selection-box-1">
+                                                    <select required name="sex" id="sex">
+                                                        <option value="Male"<?php echo ($sex == "Male") ? " selected" : ""; ?>>Male</option>
+                                                        <option value="Female"<?php echo ($sex == "Female") ? " selected" : ""; ?>>Female</option>
+                                                    </select>
+                                                </div>
+
+                                                <label for="lrn">LRN </label>
+                                                <input required style="width: 100px;" type="text" name="lrn" 
+                                                    required value="<?php echo ($lrn != "") ? $lrn : ''; ?>"id="lrn">
+
+                                            </div>
+
+                                            <div class="info-3">
+                                                <label for="birthdate"> Birthdate </label>
+                                                <input type="date" id="birthday" name="birthday" class="form-control" required value="<?php echo ($birthday != "") ? $birthday : "2023-06-17"; ?>">
+
+                                                <label for="birthplade"> Birthplace </label>
+                                                <input type="text" id="birthplace" name="birthplace" class="form-control" required value="<?php echo ($birthplace != "") ? $birthplace : "Taguigarao"; ?>">
+
+                                                <label for="religion"> Religion </label>
+                                                <input type="text" id="religion" name="religion" class="form-control" required value="<?php echo ($religion != "") ? $religion : "None"; ?>">
+
+                                            </div>
+
+                                            <div class="info-4">
+                                                <label for="address"> Address </label>
+                                                <input  style="text-align: start;" type="text" id="address" name="address" class="form-control" required value="<?php echo ($address != "") ? $address : "None"; ?>">
+                                            </div>
+
+                                            <div class="info-5">
+                                                <label for="phoneNo"> Phone no. </label>
+                                                <input type="tel" id="contact_number" name="contact_number" class="form-control" required value="<?php echo ($contact_number != "") ? $contact_number : "09151515123"; ?>">
+                                                <label for="email"> Email </label>
+                                                <input readonly type="email" id="email" name="email" class="form-control" required value="<?php echo ($email != "") ? $email : ''; ?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="ParentGuardian-info">
+                                            <h6 style="color: #EA4040;">Parent/Guardian's Information</h6>
+                                            <div class="info-1">
+
+                                                <label for="name"> Name </label>
+                                                <input type="text" id="parent_lastname" name="parent_lastname" class="form-control" required value="<?php echo ($parent_lastname != "") ? $parent_lastname : 'Surname'; ?>">
+                                                <input type="text" id="parent_firstname" name="parent_firstname" class="form-control" required value="<?php echo ($parent_firstname != "") ? $parent_firstname : ''; ?>">
+                                                <input type="text" id="parent_middle_name" name="parent_middle_name" class="form-control" required value="<?php echo ($parent_middle_name != "") ? $parent_middle_name : 'Z'; ?>">
+                                                <input type="text" id="parent_suffix" name="parent_suffix" class="form-control" value="<?php echo ($parent_suffix != "") ? $parent_suffix : ''; ?>">
+
+                                            </div>
+                                            
+                                            <div class="info-2">
+                                                <label for="phoneNo"> Phone no. </label>
+                                                <input type="tel" id="parent_contact_number" name="parent_contact_number" class="form-control" required value="<?php echo ($parent_contact_number != "") ? $parent_contact_number : '0915151515123'; ?>">
+                                                <label for="email"> Email </label>
+                                                <input type="text" id="parent_email" name="parent_email" class="form-control" required value="<?php echo ($parent_email != "") ? $parent_email : 'parent@gmail.com'; ?>">
+                                                <label for="occupation"> Occupation </label>
+                                                <input type="text" id="parent_occupation" name="parent_occupation" class="form-control" value="<?php echo ($parent_occupation != "") ? $parent_occupation : ''; ?>">
+                                            </div>
+                                        </div>
+
+                                        <div style="text-align: right" class="text-right col-md-12">
+                                            <a href="process.php?new_student=true&step=1">
+                                                <button type="button" class="btn btn-outline-info">Return</button>
+                                            </a>
+                                            <button name="new_step2_btn" 
+                                                type="submit" class="text-right btn btn-primary">Proceed
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+
+                            <!-- <div class="card">
+                                <div class="card-body">
+                                    <div class="card-header">
+
+                                        <div class="step1-top">
+                                            <h3 style="color: #EA4040;" class="mb-3">New Student Form</h3>
+                                            <span class="">S.Y <?php echo $current_term;?></span>
+                                        </div>
+                                    </div>
 
                                         <div class="mt-2 progress-bar">
                                             <div class="steps">
@@ -464,15 +732,47 @@
                                             </form>
 
                                         </div>
-                                    </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                     <?php
                 }
 
                 if(isset($_GET['step']) && $_GET['step'] == 3){
+
+                    $get_parent = $con->prepare("SELECT * FROM parent   
+                        WHERE pending_enrollees_id=:pending_enrollees_id");
+                
+                    $get_parent->bindValue(":pending_enrollees_id", $pending_enrollees_id);
+                    $get_parent->execute();
+
+                    $parent_id = null;
+                    $parent_firstname = "";
+                    $parent_lastname = "";
+                    $parent_middle_name = "";
+                    $parent_contact_number = "";
+                    $parent_email = "";
+                    $parent_occupation = "";
+                    $parent_suffix = "";
+
+                    $hasParentData = false;
+
+                    if($get_parent->rowCount() > 0){
+
+                        $rowParnet = $get_parent->fetch(PDO::FETCH_ASSOC);
+
+                        $parent_id = $rowParnet['parent_id'];
+                        $parent_firstname = $rowParnet['firstname'];
+                        $parent_lastname = $rowParnet['lastname'];
+                        $parent_middle_name = $rowParnet['middle_name'];
+                        $parent_contact_number = $rowParnet['contact_number'];
+                        $parent_occupation = $rowParnet['occupation'];
+                        $parent_suffix = $rowParnet['suffix'];
+
+                        // echo $parent_id;
+                        $hasParentData = true;
+                    }
 
                     if(isset($_POST['new_step3_btn'])){
 
@@ -513,10 +813,205 @@
                             AdminUser::error("All fields must be filled-up", "");
                             // exit();
                         }
+                        
                     }
+
+                    $SHS =  4;
+
+                    $student_type = "Senior High School";
+                    // echo $program_id . " qweqwe  qweqwe qweqweqwe";
+
+                    if($section->GetDepartmentIdByProgramId($program_id) != $SHS){
+                        $student_type = "Tertiary";
+                    }
+
+                    $year_level = 11;
+                    // echo $program_id . " qweqwe  qweqwe qweqweqwe";
+
+                    if($section->GetDepartmentIdByProgramId($program_id) != $SHS){
+                        $year_level = 1;
+                    }
+
+                    $strandName = $section->GetAcronymByProgramId($program_id);
+
                     ?>
                         <div class="row col-md-12">
+
                             <div class="card">
+                                <div class="card-body">
+                                    <div class="card-header">
+
+                                        <div class="step1-top">
+                                            <h3 style="color: #EA4040;" class="mb-3">New Student Form</h3>
+                                            <span class="">S.Y <?php echo $current_term;?></span>
+                                        </div>
+                                    </div>
+
+
+                                    <?php 
+
+                                       if($is_finished != 1){
+                                        ?>
+                                            <div class="mt-2 progress-bar">
+                                                <div class="steps">
+                                                <div class="step active">Preferred Course/Strand</div>
+                                                <div class="step active">Personal Information</div>
+                                                <div class="step active">Validate Details</div>
+                                                <div class="step ">Finished</div>
+                                                </div>
+                                            </div>
+                                        <?php
+                                       }
+                                    ?>
+                                    <!-- <div class="mt-2 progress-bar">
+                                        <div class="steps">
+                                            <div class="step active">Preferred Course/Strand</div>
+                                            <div class="step active">Personal Information</div>
+                                            <div class="step active">Validate Details</div>
+                                            <div class="step">Finished</div>
+                                        </div>
+                                    </div> -->
+
+                                    <div class="student-info">
+                                        <h6 style="color: #EA4040;">Enrollment Details</h6>
+                                       
+                                        <div class="info-2">
+                                            <label for="status">Grade Level</label>
+                                                <input style="width: 145px;" type="text" name="nationality" 
+                                                    value="<?php echo $student_type; ?>">
+
+                                             <label for="status">Admission Type</label>
+                                                 <input style="width: 145px;" type="text" name="nationality" 
+                                                value="New">
+
+                                            <label for="status">Strand</label>
+                                                 <input style="width: 145px;" type="text" name="nationality" 
+                                                value="<?php echo $strandName;?>"
+                                                id="nationality">
+
+                                        </div>
+
+                                        <div class="info-2">
+                                            <label for="status">School Year</label>
+                                            <input value="<?php echo $current_term; ?>" style="width: 145px;" type="text" >
+                                                
+                                            <label for="status">Year Level</label>
+                                            <input value="<?php echo $year_level; ?>" style="width: 145px;" type="text" >
+                                                 
+                                            <label for="status">Semester</label>
+                                            <input value="<?php echo $current_semester; ?>" style="width: 145px;" type="text" >
+                                                  
+                                        </div>
+                                    </div>
+                                        
+                                    <form method="POST">
+                                        <div class="student-info">
+                                            <h6 style="color: #EA4040;">Student information</h6>
+
+                                            <div class="info-1">
+                                                <label for="name"> Name </label>
+                                                <input type="text" required name="lastname" id="lastName" required value="<?php echo ($lastname != "") ? $lastname : ''; ?>" placeholder="Last name">
+                                                <input type="text" required name="firstname" id="firstName" value="<?php echo ($firstname != "") ? $firstname : ''; ?>" placeholder="First name">
+                                                <input type="text" name="middle_name" id="middleName" value="<?php echo ($middle_name != "") ? $middle_name : ''; ?>" placeholder="Middle name">
+                                                <input type="text" name="suffix" id="suffixName" value="<?php echo ($suffix != "") ? $suffix : ''; ?>" placeholder="Suffix name">
+                                            </div>
+                                            <div class="info-2">
+                                                <label for="status"> Status </label>
+                                                <div class="selection-box-1">
+                                                    <select id="status" name="civil_status" class="form-control" required>
+                                                        <option value="Single"<?php echo ($civil_status == "Single") ? " selected" : ""; ?>>Single</option>
+                                                        <option value="Married"<?php echo ($civil_status == "Married") ? " selected" : ""; ?>>Married</option>
+                                                        <option value="Divorced"<?php echo ($civil_status == "Divorced") ? " selected" : ""; ?>>Divorced</option>
+                                                        <option value="Widowed"<?php echo ($civil_status == "Widowed") ? " selected" : ""; ?>>Widowed</option>
+                                                    </select>
+                                                </div>
+                                                <label for="citizenship">Citizenship</label>
+                                                <input style="width: 220px;" type="text" name="nationality" 
+                                                    required value="<?php echo ($nationality != "") ? $nationality : ''; ?>"id="nationality">
+
+                                                <label for="gender"> Gender </label>
+                                                <div class="selection-box-1">
+                                                    <select required name="sex" id="sex">
+                                                        <option value="Male"<?php echo ($sex == "Male") ? " selected" : ""; ?>>Male</option>
+                                                        <option value="Female"<?php echo ($sex == "Female") ? " selected" : ""; ?>>Female</option>
+                                                    </select>
+                                                </div>
+
+                                                <label for="lrn">LRN </label>
+                                                <input required style="width: 100px;" type="text" name="lrn" 
+                                                    required value="<?php echo ($lrn != "") ? $lrn : ''; ?>"id="lrn">
+
+                                            </div>
+
+                                            <div class="info-3">
+                                                <label for="birthdate"> Birthdate </label>
+                                                <input type="date" id="birthday" name="birthday" class="form-control" required value="<?php echo ($birthday != "") ? $birthday : "2023-06-17"; ?>">
+
+                                                <label for="birthplade"> Birthplace </label>
+                                                <input type="text" id="birthplace" name="birthplace" class="form-control" required value="<?php echo ($birthplace != "") ? $birthplace : "Taguigarao"; ?>">
+
+                                                <label for="religion"> Religion </label>
+                                                <input type="text" id="religion" name="religion" class="form-control" required value="<?php echo ($religion != "") ? $religion : "None"; ?>">
+
+                                            </div>
+
+                                            <div class="info-4">
+                                                <label for="address"> Address </label>
+                                                <input style="text-align: start;" type="text" id="address" name="address" class="form-control" required value="<?php echo ($address != "") ? $address : "None"; ?>">
+                                            </div>
+
+                                            <div class="info-5">
+                                                <label for="phoneNo"> Phone no. </label>
+                                                <input type="tel" id="contact_number" name="contact_number" class="form-control" required value="<?php echo ($contact_number != "") ? $contact_number : "09151515123"; ?>">
+                                                <label for="email"> Email </label>
+                                                <input type="email" id="email" name="email" class="form-control" required value="<?php echo ($email != "") ? $email : ''; ?>">
+                                            </div>
+                                        </div>
+
+                                        <div class="ParentGuardian-info">
+                                            <h6 style="color: #EA4040;">Parent/Guardian's Information</h6>
+                                            <div class="info-1">
+
+                                                <label for="name"> Name </label>
+                                                <input type="text" id="parent_lastname" name="parent_lastname" class="form-control" required value="<?php echo ($parent_lastname != "") ? $parent_lastname : 'Surname'; ?>">
+                                                <input type="text" id="parent_firstname" name="parent_firstname" class="form-control" required value="<?php echo ($parent_firstname != "") ? $parent_firstname : ''; ?>">
+                                                <input type="text" id="parent_middle_name" name="parent_middle_name" class="form-control" required value="<?php echo ($parent_middle_name != "") ? $parent_middle_name : 'Z'; ?>">
+                                                <input type="text" id="parent_suffix" name="parent_suffix" class="form-control" value="<?php echo ($parent_suffix != "") ? $parent_suffix : ''; ?>">
+
+                                            </div>
+                                            
+                                            <div class="info-2">
+                                                <label for="phoneNo"> Phone no. </label>
+                                                <input type="tel" id="parent_contact_number" name="parent_contact_number" class="form-control" required value="<?php echo ($parent_contact_number != "") ? $parent_contact_number : '0915151515123'; ?>">
+                                                <label for="email"> Email </label>
+                                                <input type="text" id="parent_email" name="parent_email" class="form-control" required value="<?php echo ($parent_email != "") ? $parent_email : 'parent@gmail.com'; ?>">
+                                                <label for="occupation"> Occupation </label>
+                                                <input type="text" id="parent_occupation" name="parent_occupation" class="form-control" value="<?php echo ($parent_occupation != "") ? $parent_occupation : ''; ?>">
+                                            </div>
+                                        </div>
+
+                                        <?php 
+
+                                            if($is_finished != 1){
+
+                                                ?>
+                                                    <div style="text-align: right" class="text-right col-md-12">
+                                                        <a href="process.php?new_student=true&step=2">
+                                                            <button type="button" class="btn btn-outline-primary">Return</button>
+                                                        </a>
+                                                        <button name="new_step3_btn" 
+                                                            type="submit" class="text-right btn btn-success">Confirm
+                                                        </button>
+                                                    </div>
+                                                <?php
+                                            }
+                                        ?>
+                                        
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="card" style="display: none;">
                                 <div class="card-body">
                                     <div class="card-header">
 
@@ -617,7 +1112,7 @@
                                                     <button type="button" class="btn btn-outline-primary">Return</button>
                                                 </a>
 
-                                                <button name="new_step3_btn" type="submit" class="btn btn-success">Validate</button>
+                                                <button name="new_step3_btn" type="submit" class="btn btn-success">Confirm</button>
 
                                                 <!-- <a href="process.php?new_student=true&step=2">
                                                     <button name="new_step3_btn" type="submit" class="btn btn-success">Validate</button>
@@ -635,34 +1130,29 @@
 
                     ?>
                        <div class="row col-md-12">
-                            <div class="card">
+                            <div class="card" style="padding-bottom: 20px;">
 
                                 <div class="card-header">
                                     <h5 class="mb-3">New Student Form</h5>
                                     <span class="">S.Y <?php echo $current_term;?></span>
 
-                                    <div class="mt-2 progress-bar">
-                                        <div class="steps">
-                                        <div class="step active">Preferred Course/Strand</div>
-                                        <div class="step active">Personal Information</div>
-                                        <div class="step active">Validate Details</div>
-                                        <div class="step active">Finished</div>
-                                        </div>
-                                    </div>
+                                    
+                                    
                                 </div>
                                 <h3 class="text-center ">You've successfully completed your form!</h3>
-                            </div>
-                            <div class="col-md-3">
-                                <a href="profile.php?fill_up_state=finished">
-                                    <button class="btn btn-primary">Return to Home.</button>
 
-                                </a>
+                               
                             </div>
+                            
+                             <div style="margin-top: 10px; text-align:right;" class="col-md-11">
+                                    <a href="profile.php?fill_up_state=finished">
+                                        <button class="btn btn-primary">Return to Home.</button>
+                                    </a>
+                                </div>
                         </div> 
                     <?php
                 }
             }
-
 
 
         }

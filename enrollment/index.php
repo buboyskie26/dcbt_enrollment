@@ -25,9 +25,8 @@
 
 <body>
     <div class="row">
-        <div class="col-lg-10 offset-md-1">
-            <ul class="nav nav-tabs" role="tablist">
-                
+        <div class="col-lg-12  ">
+            <!-- <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="pending-regular-new-tab" 
                         data-bs-toggle="tab" 
@@ -36,7 +35,7 @@
                         Regular (New)
                     </a>
                 </li>
-            </ul>
+            </ul> -->
 
             <div class='tab-content channelContent' id='myTabContent'>
                 <div class="tab-pane fade show active" id="pending-regular-new"
@@ -50,4 +49,7 @@
             </div> -->
         </div>
     </div>
+
+
+   
 </body>

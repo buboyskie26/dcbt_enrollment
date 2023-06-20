@@ -40,27 +40,31 @@
             <div class="column">
                 <div class="header">
                     <!-- <img src="assets/images/icons/VideoTubeLogo.png" title="logo" alt="Site logo"> -->
-                    <h3>Admin Sign In</h3>
-                    <span>to ELMS_THESIS</span>
-                </div>
-                
-                <div class="buttons">
-                    <a href="cashierLogin.php">
-                        <button class="btn btn-success btn-sm">Cashier</button>
-                    </a>
+                    <h3 class="text-center text-muted">Admin</h3>
                 </div>
 
-                <div class="buttons">
-                    <a href="registrar_login.php">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="cashierLogin.php">
+                                <button class="btn btn-success btn-sm">Cashier</button>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+<a href="registrar_login.php">
                         <button class="btn btn-secondary btn-sm">Registrar</button>
                     </a>
-                </div>
+                        </div>
 
-                <div class="buttons">
-                    <a href="teacher_login.php">
+                        <div class="col-md-4">
+  <a href="teacher_login.php">
                         <button class="btn btn-info btn-sm">Teacher</button>
                     </a>
+                        </div>
+                    </div>
                 </div>
+                
+               
 
                 <div class="loginForm">
                     <form action="adminLogin.php" method="POST">

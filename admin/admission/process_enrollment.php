@@ -12,20 +12,15 @@
     include('../classes/Course.php');
     ?>
         <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link
                 href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
                 rel="stylesheet"
                 integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
                 crossorigin="anonymous"
                 />
-            <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-            />
-            <style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+            
+            <!-- <style>
 
                 .process-status{
                     display: flex;
@@ -208,13 +203,23 @@
                     color: #863131;
                 }
 
-            </style>
+            </style> -->
+
+            <!-- <link rel="stylesheet" href="../../admin/assets/css/enrollees/subject_insertion.css"> -->
+
+            <link rel="stylesheet" href="../../admin/assets/css/admission/process_enrollment.css">
+
         </head>
+ 
     <?php
+
+
+
     if(!AdminUser::IsRegistrarAuthenticated()){
         header("Location: /dcbt/adminLogin.php");
         exit();
     }
+
 
     $studentEnroll = new StudentEnroll($con);
     $old_enrollees = new OldEnrollees($con, $studentEnroll);
@@ -243,7 +248,6 @@
         } else {
             $enrollment_form_id = $_SESSION['enrollment_form_id'];
         }
-
 
 
         $sql = $con->prepare("SELECT * FROM pending_enrollees
@@ -308,6 +312,153 @@
 
                 ?>
                     <div class="row col-md-12">
+
+
+                        <!--  -->
+
+                        <div class="back-menu">
+                            <button type="button" class="admission-btn" onclick="find_form()">
+                            <i class="bi bi-arrow-left-circle"></i> Admission
+                            </button>
+                        </div>
+                        
+                        <div class="enrollment-form-container">
+
+                            <div class="enrollment-form-upper">
+                                <h3>Enrollment Form</h3>
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </div>
+
+                            <div class="form-upper-second-container">
+                                <div class="form-inner">
+                                    <h5>Form ID</h5>
+                                    <p><?php echo $enrollment_form_id;?></p>
+                                </div>
+                                <div class="form-inner">
+                                    <h5>Admission Type</h5>
+                                    <p>New</p>
+                                </div>
+                                <div class="form-inner">
+                                    <h5>Student No</h5>
+                                    <p>N/A</p>
+                                </div>
+                                <div class="form-inner">
+                                    <h5>Status</h5>
+                                    <p>Evaluation</p>
+                                </div>
+                                <div class="form-inner">
+                                    <h5>Submitted on</h5>
+                                    <p>
+                                        <?php
+                                            $date = new DateTime($date_creation);
+                                            $formattedDate = $date->format('m/d/Y H:i');
+                                            echo $formattedDate;
+                                        ?>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="process-status">
+                                <table class="selection">
+                                    <tr>
+                                        <th class="checkDetails" id="icon-1">
+                                            <i  style="color: #FFFF;" class="bi bi-clipboard-check"></i>
+                                        </th>
+
+                                        <th style="color: #333;" id="line-1">___________________________</th>
+
+                                        <th  class="findSection" id="icon-2">
+                                            <i style="color: #FFFF;" class="bi bi-building"></i>
+                                        </th>
+
+                                        <th style="color: #333;" id="line-2">___________________________</th>
+
+                                        <th class="subConfirm" id="icon-3">
+                                            <i class="bi bi-journal"></i>
+                                        </th>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #FFFF;" class="checkDetails" id="process-1">Check details</td>
+                                        <td></td>
+                                        <td style="color: #FFFF;" class="findSection" id="process-2">Find section</td>
+                                        <td></td>
+                                        <td class="subConfirm" id="process-3">Subject Confirmation</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div class="height-student-details">
+                            <div class="step-3-section-container">
+
+                                <div class="form-details-enrolled" id="subjects-details">
+                                    <div class="form-details" id="check-details">
+                                        <h3>Student details</h3>
+
+                                        <form class="row g-3">
+                                            <div class="col-md-4">
+                                            <label for="inputFirstName"  class="form-label">First name</label>
+                                            <input type="text" value='<?php echo $firstname;?>' class="form-control" id="inputFirstName" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            <label for="inputLastName"  class="form-label">Last name</label>
+                                            <input type="text" value='<?php echo $lastname;?>' class="form-control" id="inputLastName" />
+                                            </div>
+                                            <div class="col-md-4">
+                                            <label for="inputMiddleName"  class="form-label">Middle name</label
+                                            >
+                                            <input type="text" value='<?php echo $middle_name;?>' class="form-control" id="inputMiddleName" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="inputBirthdate" class="form-label">Birthdate</label>
+                                                <input type="date" value='<?php echo $birthday;?>' class="form-control" id="inputBirthdate" />
+                                            </div>
+
+                                            <div class="col-md-4">
+                                            <label for="inputGender" class="form-label">Gender</label>
+                                            <select id="inputGender" class="form-select">
+                                                <option <?php if ($sex == 'Male') echo 'selected'; ?>>Male</option>
+                                                <option <?php if ($sex == 'FeMale') echo 'selected'; ?>>Male</option>
+                                            </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                            <label for="inputContactNo" class="form-label">Contact no.</label>
+                                            <input type="text" value='<?php echo $contact_number;?>' class="form-control" id="inputContactNo" />
+                                            </div>
+                                            <div class="col-12">
+                                            <label for="inputAddress" class="form-label">Address</label>
+                                            <input type="text" value='<?php echo $address;?>' class="form-control" id="inputAddress" />
+                                            </div>
+                                        
+                                        </form>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <?php
+                            
+                                
+                            ?>
+                            <div class="mt-3 row col-md-12 text-right">
+                                <a style='text-align: end;' href='process_enrollment.php?step2=true&id=<?php echo $pending_enrollees_id;?>'>
+                                    <button type='button'class='button-style-primary primary'>Proceed</button>
+                                </a>
+                            </div>
+                            
+                                 
+                        </div>
+
+
+
+
+                        <!--  -->
+
+
+
 
                         <div class="content">
 
@@ -446,35 +597,16 @@
                                     </div>
                                    
                                 </form>
-                                
                             </div>
 
                             <?php
-                            
-                            echo "
-                                <a style='text-align: end;' href='process_enrollment.php?step2=true&id=$pending_enrollees_id'>
-                                    <button type='button'class='btn-sm btn-primary'>Proceed</button>
-                                </a>
-                            ";
-                            // if($type == "SHS"){
-                            //     echo "
-                            //         <a style='text-align: end;' href='process_enrollment.php?step2=true&id=$pending_enrollees_id'>
-                            //             <button type='button'class='btn-sm btn-primary'>Proceed</button>
-                            //         </a>
-                            //     ";
-                            // }else if($type == "Tertiary"){
-                            //     echo "
-                            //         <a style='text-align: end;' href='process_enrollment.php?step2=true&type=tertiary&id=$pending_enrollees_id'>
-                            //             <button type='button'class='btn-sm btn-primary'>Proceed</button>
-                            //         </a>
-                            //     ";
-                            // }
-                            // ?>
-
-
+                                echo "
+                                    <a style='text-align: end;' href='process_enrollment.php?step2=true&id=$pending_enrollees_id'>
+                                        <button type='button'class='btn-sm btn-primary'>Proceed</button>
+                                    </a>
+                                ";
+                            ?>
                         </div>
-                         
-
                     </div>
                 <?php
             }
@@ -510,264 +642,180 @@
 
                 // echo $program_id;
                 ?>
-                <div class="row col-md-12">
+                    <div class="col-md-12 row">
 
-                    <div class="content">
+                        <!-- START 2nd  -->
 
-                        <div class="form-header">
-                            <div class="header-content">
-                                <h2>Enrollment form</h2>
+                        <div class="back-menu">
+                            <button type="button" class="admission-btn" onclick="find_form()">
+                            <i class="bi bi-arrow-left-circle"></i> Admission
+                            </button>
+                        </div>
+                        
+                        <div class="enrollment-form-container">
+
+                            <div class="enrollment-form-upper">
+                                <h3>Enrollment Form</h3>
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
                             </div>
 
-                            <div class="student-table">
-                                <table>
+                            <div class="form-upper-second-container">
+                                <div class="form-inner">
+                                    <h5>Form ID</h5>
+                                    <p><?php echo $enrollment_form_id;?></p>
+                                </div>
+                                <div class="form-inner">
+                                    <h5>Admission Type</h5>
+                                    <p>New</p>
+                                </div>
+                                <div class="form-inner">
+                                    <h5>Student No</h5>
+                                    <p>N/A</p>
+                                </div>
+                                <div class="form-inner">
+                                    <h5>Status</h5>
+                                    <p>Evaluation</p>
+                                </div>
+                                <div class="form-inner">
+                                    <h5>Submitted on</h5>
+                                    <p>
+                                        <?php
+                                            $date = new DateTime($date_creation);
+                                            $formattedDate = $date->format('m/d/Y H:i');
+                                            echo $formattedDate;
+                                        ?>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="process-status">
+                                <table class="selection">
                                     <tr>
-                                    <th>Form ID</th>
-                                    <th>Admission type</th>
-                                    <th>Student no</th>
-                                    <th>Status</th>
-                                    <th>Submitted on:</th>
+                                        <th class="checkDetails" id="icon-1">
+                                            <i  style="color: #FFFF;" class="bi bi-clipboard-check"></i>
+                                        </th>
+
+                                        <th style="color: #FFFF;" id="line-1">___________________________</th>
+
+                                        <th  class="findSection" id="icon-2">
+                                            <i style="color: #FFFF;" class="bi bi-building"></i>
+                                        </th>
+
+                                        <th style="color: #333;" id="line-2">___________________________</th>
+
+                                        <th class="subConfirm" id="icon-3">
+                                            <i class="bi bi-journal"></i>
+                                        </th>
+
                                     </tr>
                                     <tr>
-                                    <td><?php echo $enrollment_form_id;?></td>
-                                    <td>New</td>
-                                    <td>N/A</td>
-                                    <td>Evaluation</td>
-
-                                    <td><?php
-                                        $date = new DateTime($date_creation);
-                                        $formattedDate = $date->format('m/d/Y H:i');
-
-                                        echo $formattedDate;
-                                    ?></td>
-                                    
+                                        <td style="color: #FFFF;" class="checkDetails" id="process-1">Check details</td>
+                                        <td></td>
+                                        <td style="color: #FFFF;" class="findSection" id="process-2">Find section</td>
+                                        <td></td>
+                                        <td class="subConfirm" id="process-3">Subject Confirmation</td>
                                     </tr>
                                 </table>
                             </div>
+
                         </div>
-                    </div>
 
-                    <div class="process-status">
-                        <table class="selection">
-                            <tr>
-                                <th class="checkDetails" id="icon-1">
-                                <i  style="color: #FFFF;" class="bi bi-clipboard-check"></i>
-                                </th>
-                                <th style="color: #FFFF;" id="line-1">___________________________</th>
-                                <th  class="findSection" id="icon-2">
-                                <i style="color: #FFFF;" class="bi bi-building"></i>
-                                </th>
-                                <th   id="line-2">___________________________</th>
-                                <th class="subConfirm" id="icon-3">
-                                <i class="bi bi-journal"></i>
-                                </th>
-                            </tr>
-                            <tr>
-                                <td style="color: #FFFF;" class="checkDetails" id="process-1">Check details</td>
-                                <td></td>
-                                <td style="color: #FFFF;" class="findSection" id="process-2">Find section</td>
-                                <td></td>
-                                <td class="subConfirm" id="process-3">Subject Confirmation</td>
-                            </tr>
-                        </table>
-                    </div>
+                        <div class="height-enrolled-details">
+                            <div class="enrolled-details-container">
+                                <!--enrolled-subjects-->
+                                <div class="form-details-enrolled" id="enrollment-form">
+                                    <h3>Enrollment Details</h3>
 
-                    <div class="card">
-                        <div class="card-body">
-                            <div  style="width: 100%;" class="form-details"
-                                id="enrollment-details">
-                                <h3>Enrollment Details</h3>
+                                    <?php
+                                        if($type == "SHS"){
 
-                                <?php
-                                    if($type == "SHS"){
-
-                                        ?>
-                                        <form class="row g-3">
-                                            <div class="col-md-4">
-                                            <label for="inputSchoolYear" class="form-label">S.Y.</label>
-                                            <input readonly type="text" value="<?php echo $current_school_year_term; ?>" class="form-control" id="inputSchoolYear" />
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="inputTrack" class="form-label">Track</label>
-
-                                                <select id="inputTrack" class="form-select">
-                                                    <?php 
-
-                                                        $SHS_DEPARTMENT = 4;
-                                                    
-                                                        $track_sql = $con->prepare("SELECT 
-                                                        program_id, track, acronym 
-                                                            
-                                                            FROM program 
-                                                        WHERE department_id =:department_id
-                                                        GROUP BY track
-                                                        ");
-
-                                                        $track_sql->bindValue(":department_id", $SHS_DEPARTMENT);
-                                                        $track_sql->execute();
-                                                        
-
-                                                        while($row = $track_sql->fetch(PDO::FETCH_ASSOC)){
-
-                                                            $row_program_id = $row['program_id'];
-
-                                                            $track = $row['track'];
-
-                                                            $selected = ($row_program_id == $program_id) ? "selected" : "";
-
-                                                            echo "<option value='$row_program_id' $selected>$track</option>";
-                                                        }
-                                                    ?>
-                                                    <!-- <option selected>TVL</option>
-                                                    <option>Arts and Design</option> -->
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <label for="inputStrand" class="form-label">Strand</label>
-
-                                                <select onchange="chooseStrand(this, <?php echo $pending_enrollees_id;?>)" 
-                                                    name="strand" id="strand" class="form-select">
-                                                    <?php 
-
-                                                        $SHS_DEPARTMENT = 4;
-                                                    
-                                                        $track_sql = $con->prepare("SELECT 
-                                                        program_id, track, acronym 
-                                                            
-                                                            FROM program 
-                                                        WHERE department_id =:department_id
-                                                        GROUP BY acronym
-                                                        ");
-
-                                                        $track_sql->bindValue(":department_id", $SHS_DEPARTMENT);
-                                                        $track_sql->execute();
-
-                                                        while($row = $track_sql->fetch(PDO::FETCH_ASSOC)){
-
-                                                            $row_program_id = $row['program_id'];
-
-                                                            $acronym = $row['acronym'];
-
-                                                            $selected = ($row_program_id == $program_id) ? "selected" : "";
-
-                                                            echo "<option value='$row_program_id' $selected>$acronym</option>";
-                                                        }
-                                                    ?>
-
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="inputYear" class="form-label">Year</label>
-                                            
-                                                <select id="inputYear" class="form-select">
-
-                                                    <option value="11" selected>Grade 11</option>
-                                                    <option  value="12">Grade 12</option>
-                                                
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                            <label for="inputSemester" class="form-label">Semester</label>
-                                            <input readonly type="text" value="<?php echo $current_school_year_period; ?>" class="form-control" id="inputSchoolYear" />
-                                            <!-- <select id="inputSemester" class="form-select">
-                                                <option <?php if ($current_school_year_period == 'First') echo 'selected'; ?>>First</option>
-                                                <option <?php if ($current_school_year_period == 'Second') echo 'selected'; ?>>Second</option>
-                                            </select> -->
-                                            </div>
-                                        </form>
-                                        <?php
-                                    }
-                                    else if($type == "Tertiary"){
-                                        ?>
-
-                                        <form class="row g-3">
-                                            <div class="col-md-4">
+                                            ?>
+                                            <form class="row g-3">
+                                                <div class="col-md-4">
                                                 <label for="inputSchoolYear" class="form-label">S.Y.</label>
                                                 <input readonly type="text" value="<?php echo $current_school_year_term; ?>" class="form-control" id="inputSchoolYear" />
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label for="inputTrack" class="form-label">Track</label>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="inputTrack" class="form-label">Track</label>
 
-                                                <select id="inputTrack" class="form-select">
-                                                    <?php 
+                                                    <select id="inputTrack" class="form-select">
+                                                        <?php 
 
-                                                        $SHS_DEPARTMENT = 4;
-                                                    
-                                                        $track_sql = $con->prepare("SELECT 
-                                                        program_id, track, acronym 
-                                                            
-                                                            FROM program 
-                                                        WHERE department_id !=:department_id
-                                                        GROUP BY track
-                                                        ");
-
-                                                        $track_sql->bindValue(":department_id", $SHS_DEPARTMENT);
-                                                        $track_sql->execute();
+                                                            $SHS_DEPARTMENT = 4;
                                                         
-                                                        while($row = $track_sql->fetch(PDO::FETCH_ASSOC)){
+                                                            $track_sql = $con->prepare("SELECT 
+                                                            program_id, track, acronym 
+                                                                
+                                                                FROM program 
+                                                            WHERE department_id =:department_id
+                                                            GROUP BY track
+                                                            ");
 
-                                                            $row_program_id = $row['program_id'];
-
-                                                            $track = $row['track'];
-
-                                                            $selected = ($row_program_id == $program_id) ? "selected" : "";
-
-                                                            echo "<option value='$row_program_id' $selected>$track</option>";
-                                                        }
-                                                    ?>
-                                                   
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <label for="inputStrand" class="form-label">Strand</label>
-
-                                                <select onchange="chooseStrand(this, <?php echo $pending_enrollees_id;?>)" 
-                                                    name="strand" id="strand" class="form-select">
-                                                    <?php 
-
-                                                        $SHS_DEPARTMENT = 4;
-                                                    
-                                                        $track_sql = $con->prepare("SELECT 
-                                                        program_id, track, acronym 
+                                                            $track_sql->bindValue(":department_id", $SHS_DEPARTMENT);
+                                                            $track_sql->execute();
                                                             
-                                                            FROM program 
-                                                        WHERE department_id !=:department_id
-                                                        GROUP BY acronym
-                                                        ");
 
-                                                        $track_sql->bindValue(":department_id", $SHS_DEPARTMENT);
-                                                        $track_sql->execute();
+                                                            while($row = $track_sql->fetch(PDO::FETCH_ASSOC)){
 
-                                                        while($row = $track_sql->fetch(PDO::FETCH_ASSOC)){
+                                                                $row_program_id = $row['program_id'];
 
-                                                            $row_program_id = $row['program_id'];
+                                                                $track = $row['track'];
 
-                                                            $acronym = $row['acronym'];
+                                                                $selected = ($row_program_id == $program_id) ? "selected" : "";
 
-                                                            $selected = ($row_program_id == $program_id) ? "selected" : "";
+                                                                echo "<option value='$row_program_id' $selected>$track</option>";
+                                                            }
+                                                        ?>
+                                                        <!-- <option selected>TVL</option>
+                                                        <option>Arts and Design</option> -->
+                                                    </select>
+                                                </div>
 
-                                                            echo "<option value='$row_program_id' $selected>$acronym</option>";
-                                                        }
-                                                    ?>
+                                                <div class="col-md-4">
+                                                    <label for="inputStrand" class="form-label">Strand</label>
 
-                                                </select>
-                                            </div>
+                                                    <select onchange="chooseStrand(this, <?php echo $pending_enrollees_id;?>)" 
+                                                        name="strand" id="strand" class="form-select">
+                                                        <?php 
 
-                                            <div class="col-md-6">
-                                                <label for="inputYear" class="form-label">Year</label>
-                                            
-                                                <select id="inputYear" class="form-select">
+                                                            $SHS_DEPARTMENT = 4;
+                                                        
+                                                            $track_sql = $con->prepare("SELECT 
+                                                            program_id, track, acronym 
+                                                                
+                                                                FROM program 
+                                                            WHERE department_id =:department_id
+                                                            GROUP BY acronym
+                                                            ");
 
-                                                    <option value="1" selected>1st Year</option>
-                                                    <option value="2">2nd Year</option>
-                                                    <option value="3">3rd Year</option>
-                                                    <option value="4">4th Year</option>
-                                                </select>
-                                            </div>
+                                                            $track_sql->bindValue(":department_id", $SHS_DEPARTMENT);
+                                                            $track_sql->execute();
 
-                                            <div class="col-md-6">
+                                                            while($row = $track_sql->fetch(PDO::FETCH_ASSOC)){
+
+                                                                $row_program_id = $row['program_id'];
+
+                                                                $acronym = $row['acronym'];
+
+                                                                $selected = ($row_program_id == $program_id) ? "selected" : "";
+
+                                                                echo "<option value='$row_program_id' $selected>$acronym</option>";
+                                                            }
+                                                        ?>
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="inputYear" class="form-label">Year</label>
+                                                
+                                                    <select id="inputYear" class="form-select">
+
+                                                        <option value="11" selected>Grade 11</option>
+                                                        <option  value="12">Grade 12</option>
+                                                    
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
                                                 <label for="inputSemester" class="form-label">Semester</label>
                                                 <input readonly type="text" value="<?php echo $current_school_year_period; ?>" class="form-control" id="inputSchoolYear" />
                                                 <!-- <select id="inputSemester" class="form-select">
@@ -775,260 +823,760 @@
                                                     <option <?php if ($current_school_year_period == 'Second') echo 'selected'; ?>>Second</option>
                                                 </select> -->
                                                 </div>
-                                        </form>
+                                            </form>
+                                            <?php
+                                        }
+                                        else if($type == "Tertiary"){
+                                            ?>
 
-                                        <?php
-                                    }
-                                ?>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                    <!-- Enrollment Form -->
-                    <div style="display: none;" class="container">
-                        <h3 class="mt-2 text-center text-primary">Enrollment Form</h3>
-                        <div class="bg-content">
-                            <div class="form-details" id="check-details">
-                                <div class="mb-4 col-md-3">
-                                    <label for="">Form Id</label>
-                                    <input readonly style="width: 100%;" type="text" 
-                                        value='<?php echo $enrollment_form_id;?>' class="form-control">
-                                </div>
-                                <div class="mb-4 col-md-3">
-                                    <label for="">Name</label>
-                                    <input readonly style="width: 100%;" type="text" 
-                                        value='<?php echo $student_fullname;?>' class="form-control">
-                                </div>
-                                <div class="mb-4 col-md-3">
-                                    <label for="">Admission Type</label>
-                                    <input readonly style="width: 100%;" type="text" 
-                                        value='New' class="form-control">
-                                    </div>
-                                <div class="mb-4 col-md-3">
-                                    <label for="">Date Submitted</label>
-                                    <input readonly style="width: 100%;" type="text" 
-                                        value='<?php echo $date_creation?>' class="form-control">
-                                </div>
-                            </div>
-                        </div> 
-
-
-                    </div>
-
-                    <div class="card ">
-                            
-                        <div class="card-header">
-                            <h3 class="text-center text-success">Available Section</h3>
-
-
-                            <?php 
-
-                                if($section->CheckIfProgramHasSection($program_id,
-                                    $current_school_year_term) == false){
-
-                                    echo "
-                                        <a href='../section/create.php'>
-                                            <button class='btn btn-success'>Add Section</button>
-                                        </a>
-                                    ";
-                                }
-                            
-                            ?>
-                            
-                        </div>
-
-                        <div class="card-body">
-
-                        <form method="POST">
-                            <table id="availableTransfereeSectionTable" class="table table-striped table-bordered table-hover "  style="font-size:13px" cellspacing="0"  > 
-                                <thead>
-                                    <tr class="text-center"> 
-                                        <th rowspan="2">Section Id</th>
-                                        <th rowspan="2">Section Name</th>
-                                        <th rowspan="2">Student</th>
-                                        <th rowspan="2">Capacity</th>
-                                        <th rowspan="2">Term</th>
-                                        <th rowspan="2"></th>
-                                    </tr>	
-                                </thead> 	
-                                <tbody>
-                                    <?php
-                                        $course_level = 11;
-                                        $active = "yes";
-
-                                        # Only Available now.
-                                        $sql = $con->prepare("SELECT * FROM course
-
-                                            WHERE program_id=:program_id
-                                            AND active=:active
-                                            AND school_year_term=:school_year_term");
-
-                                        $sql->bindValue(":program_id", $program_id);
-                                        $sql->bindValue(":active", $active);
-                                        $sql->bindValue(":school_year_term", $current_school_year_term);
-
-                                        $sql->execute();
-                                    
-                                        if($sql->rowCount() > 0){
-
-                                            while($get_course = $sql->fetch(PDO::FETCH_ASSOC)){
-
-                                                $course_id = $get_course['course_id'];
-                                                $program_section = $get_course['program_section'];
-                                                $capacity = $get_course['capacity'];
-                                                $school_year_term = $get_course['school_year_term'];
-                                                $section = new Section($con, $course_id);
-
-                                                $section_obj = $section->GetSectionObj($course_id);
-
-                                                $totalStudent = $section->GetTotalNumberOfStudentInSection($course_id, $current_school_year_id);
-                                                $capacity = $section_obj['capacity'];
-
-                                                $program_id = $section_obj['program_id'];
-                                                $course_level = $section_obj['course_level'];
-
-                                                $removeSection = "removeSection($course_id, \"$program_section\")";
-
-                                                // echo $totalStudent;
-                                                // echo $program_id;
-
-                                                $new_program_section = $section->AutoCreateAnotherSection($program_section);
-
-                                                // echo $program_section;
-                                                // echo "<br>";
-                                                // echo $new_program_section;
-
-                                                // $isCloseddisabled = "<input name='selected_course_id' 
-                                                //     class='radio' value='$course_id' 
-                                                //     type='radio' " . ($course_id == $student_course_id ? "checked" : "") . " " . ($isClosed ? "disabled" : "") . ">";   
-                                            
-
-
-                                                if($totalStudent == $capacity){
-
-                                                }
-                                                echo "
-                                                <tr class='text-center'>
-                                                    <td>$course_id</td>
-                                                    <td>$program_section</td>
-                                                    <td>$totalStudent</td>
-                                                    <td>$capacity</td>
-                                                    <td>$school_year_term</td>
-                                                    <td>
-                                                        <input name='selected_course_id' class='radio' value='$course_id' type='radio' " . (($totalStudent == $capacity) ? "disabled" : "") . ">
-                                                    <td>
-                                                        <i onclick='$removeSection' style='cursor: pointer; color: orange; " . ($totalStudent != 0 ? "display: none;" : "") . "' class='fas fa-times'></i>
-                                                    </td>
-                                                </tr>
-                                            ";
-                                            }
-                                            
-                                        }else{
-                                            echo "
-                                                <div class='col-md-12'>
-                                                    <h4 class='text-center text-muted'>No currently available section for $program_acronym</h4>
+                                            <form class="row g-3">
+                                                <div class="col-md-4">
+                                                    <label for="inputSchoolYear" class="form-label">S.Y.</label>
+                                                    <input readonly type="text" value="<?php echo $current_school_year_term; ?>" class="form-control" id="inputSchoolYear" />
                                                 </div>
-                                            ";
+                                                <div class="col-md-4">
+                                                    <label for="inputTrack" class="form-label">Track</label>
+
+                                                    <select id="inputTrack" class="form-select">
+                                                        <?php 
+
+                                                            $SHS_DEPARTMENT = 4;
+                                                        
+                                                            $track_sql = $con->prepare("SELECT 
+                                                            program_id, track, acronym 
+                                                                
+                                                                FROM program 
+                                                            WHERE department_id !=:department_id
+                                                            GROUP BY track
+                                                            ");
+
+                                                            $track_sql->bindValue(":department_id", $SHS_DEPARTMENT);
+                                                            $track_sql->execute();
+                                                            
+                                                            while($row = $track_sql->fetch(PDO::FETCH_ASSOC)){
+
+                                                                $row_program_id = $row['program_id'];
+
+                                                                $track = $row['track'];
+
+                                                                $selected = ($row_program_id == $program_id) ? "selected" : "";
+
+                                                                echo "<option value='$row_program_id' $selected>$track</option>";
+                                                            }
+                                                        ?>
+                                                    
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="inputStrand" class="form-label">Strand</label>
+
+                                                    <select onchange="chooseStrand(this, <?php echo $pending_enrollees_id;?>)" 
+                                                        name="strand" id="strand" class="form-select">
+                                                        <?php 
+
+                                                            $SHS_DEPARTMENT = 4;
+                                                        
+                                                            $track_sql = $con->prepare("SELECT 
+                                                            program_id, track, acronym 
+                                                                
+                                                                FROM program 
+                                                            WHERE department_id !=:department_id
+                                                            GROUP BY acronym
+                                                            ");
+
+                                                            $track_sql->bindValue(":department_id", $SHS_DEPARTMENT);
+                                                            $track_sql->execute();
+
+                                                            while($row = $track_sql->fetch(PDO::FETCH_ASSOC)){
+
+                                                                $row_program_id = $row['program_id'];
+
+                                                                $acronym = $row['acronym'];
+
+                                                                $selected = ($row_program_id == $program_id) ? "selected" : "";
+
+                                                                echo "<option value='$row_program_id' $selected>$acronym</option>";
+                                                            }
+                                                        ?>
+
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label for="inputYear" class="form-label">Year</label>
+                                                
+                                                    <select id="inputYear" class="form-select">
+
+                                                        <option value="1" selected>1st Year</option>
+                                                        <option value="2">2nd Year</option>
+                                                        <option value="3">3rd Year</option>
+                                                        <option value="4">4th Year</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label for="inputSemester" class="form-label">Semester</label>
+                                                    <input readonly type="text" value="<?php echo $current_school_year_period; ?>" class="form-control" id="inputSchoolYear" />
+                                                    <!-- <select id="inputSemester" class="form-select">
+                                                        <option <?php if ($current_school_year_period == 'First') echo 'selected'; ?>>First</option>
+                                                        <option <?php if ($current_school_year_period == 'Second') echo 'selected'; ?>>Second</option>
+                                                    </select> -->
+                                                    </div>
+                                            </form>
+
+                                            <?php
                                         }
                                     ?>
-                                </tbody>
-                            </table>
 
-                            <a href="process_enrollment.php?step1=true&id=<?php echo $pending_enrollees_id;?> ">
-                                <button type="button" class="btn btn-outline-primary">Return</button>
-                            </a>
-                            <button type="submit" name="pending_choose_section"
-                                class="btn btn-primary">Proceed</button>
+                                </div>
+                                <form style="width: 100%;margin-left: 21px;" method="POST">
 
-                        </form>                 
+                                    <div class="form-details-enrolled" id="subjects-details">
+                                            <h3>Available Section</h3>
+
+                                            <?php 
+                                                if($section->CheckIfProgramHasSection($program_id,
+                                                    $current_school_year_term) == false){
+
+                                                    echo "
+                                                        <a href='../section/create.php'>
+                                                            <button class='btn btn-success'>Add Section</button>
+                                                        </a>
+                                                    ";
+                                                }
+                                            
+                                            ?>
+                                                <table style="font-size: 15px;"> 
+                                                    <thead>
+                                                        <tr class="text-center"> 
+                                                            <th rowspan="2">Section Id</th>
+                                                            <th rowspan="2">Section Name</th>
+                                                            <th rowspan="2">Student</th>
+                                                            <th rowspan="2">Capacity</th>
+                                                            <th rowspan="2">Term</th>
+                                                            <th rowspan="2"></th>
+                                                        </tr>
+                                                    </thead> 
+                                                    <tbody>
+                                                        <?php
+                                                            $course_level = 11;
+                                                            $active = "yes";
+
+                                                            # Only Available now.
+                                                            $sql = $con->prepare("SELECT * FROM course
+
+                                                                WHERE program_id=:program_id
+                                                                AND active=:active
+                                                                AND school_year_term=:school_year_term");
+
+                                                            $sql->bindValue(":program_id", $program_id);
+                                                            $sql->bindValue(":active", $active);
+                                                            $sql->bindValue(":school_year_term", $current_school_year_term);
+
+                                                            $sql->execute();
+                                                        
+                                                            if($sql->rowCount() > 0){
+
+                                                                while($get_course = $sql->fetch(PDO::FETCH_ASSOC)){
+
+                                                                    $course_id = $get_course['course_id'];
+                                                                    $program_section = $get_course['program_section'];
+                                                                    $capacity = $get_course['capacity'];
+                                                                    $school_year_term = $get_course['school_year_term'];
+                                                                    $section = new Section($con, $course_id);
+
+                                                                    $section_obj = $section->GetSectionObj($course_id);
+
+                                                                    $totalStudent = $section->GetTotalNumberOfStudentInSection($course_id, $current_school_year_id);
+                                                                    $capacity = $section_obj['capacity'];
+
+                                                                    $program_id = $section_obj['program_id'];
+                                                                    $course_level = $section_obj['course_level'];
+
+                                                                    $removeSection = "removeSection($course_id, \"$program_section\")";
+
+                                                                    // echo $totalStudent;
+                                                                    // echo $program_id;
+
+                                                                    $new_program_section = $section->AutoCreateAnotherSection($program_section);
+
+                                                                    // echo $program_section;
+                                                                    // echo "<br>";
+                                                                    // echo $new_program_section;
+
+                                                                    // $isCloseddisabled = "<input name='selected_course_id' 
+                                                                    //     class='radio' value='$course_id' 
+                                                                    //     type='radio' " . ($course_id == $student_course_id ? "checked" : "") . " " . ($isClosed ? "disabled" : "") . ">";   
+                                                                
+
+
+                                                                    if($totalStudent == $capacity){
+
+                                                                    }
+                                                                    echo "
+                                                                    <tr class='text-center'>
+                                                                        <td>$course_id</td>
+                                                                        <td>$program_section</td>
+                                                                        <td>$totalStudent</td>
+                                                                        <td>$capacity</td>
+                                                                        <td>$school_year_term</td>
+                                                                        <td>
+                                                                            <input name='selected_course_id' class='radio' value='$course_id' type='radio' " . (($totalStudent == $capacity) ? "disabled" : "") . ">
+                                                                            <i onclick='$removeSection' style='cursor: pointer; color: orange; " . ($totalStudent != 0 ? "display: none;" : "") . "' class='fas fa-times'></i>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                ";
+                                                                }
+                                                                
+                                                            }else{
+                                                                echo "
+                                                                    <div class='col-md-12'>
+                                                                        <h4 class='text-center text-muted'>No currently available section for $program_acronym</h4>
+                                                                    </div>
+                                                                ";
+                                                            }
+                                                        ?>
+                                                    </tbody>
+                                                </table>                                                                 
+                                    </div>
+
+                                    <div class="available-section-bottom">
+
+                                        <a href="process_enrollment.php?step1=true&id=<?php echo $pending_enrollees_id;?> ">
+                                            <button type="button" class="button-style-primary primary">Return</button>
+                                        </a>
+
+                                        <button button type="submit" name="pending_choose_section"
+                                            class="button-style-success success">Proceed
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <script>
+                        <!--  -->
+                            
+                        <div class="content">
 
-                    function chooseStrand(entity, pending_enrollees_id){
+                            <div class="form-header">
+                                <div class="header-content">
+                                    <h2>Enrollment form</h2>
+                                </div>
 
-                        var strand = document.getElementById("strand").value;
+                                <div class="student-table">
+                                    <table>
+                                        <tr>
+                                        <th>Form ID</th>
+                                        <th>Admission type</th>
+                                        <th>Student no</th>
+                                        <th>Status</th>
+                                        <th>Submitted on:</th>
+                                        </tr>
+                                        <tr>
+                                        <td><?php echo $enrollment_form_id;?></td>
+                                        <td>New</td>
+                                        <td>N/A</td>
+                                        <td>Evaluation</td>
 
-                        // console.log("Selected value: " + strand);
+                                        <td><?php
+                                            $date = new DateTime($date_creation);
+                                            $formattedDate = $date->format('m/d/Y H:i');
 
-                        Swal.fire({
-                            icon: 'question',
-                            title: `Update Strand?`,
-                            showCancelButton: true,
-                            confirmButtonText: 'Yes',
-                            cancelButtonText: 'Cancel'
-                        }).then((result) => {
+                                            echo $formattedDate;
+                                        ?></td>
+                                        
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
 
-                            if (result.isConfirmed) {
-                                // REFX
-                                $.ajax({
-                                    url: '../ajax/pending/update_student_strand.php',
-                                    type: 'POST',
-                                    data: {
-                                        strand, pending_enrollees_id
-                                    },
-                                    success: function(response) {
+                        </div>
 
-                                        console.log(response);
+                        <div class="process-status">
+                            <table class="selection">
+                                <tr>
+                                    <th class="checkDetails" id="icon-1">
+                                    <i  style="color: #FFFF;" class="bi bi-clipboard-check"></i>
+                                    </th>
+                                    <th style="color: #FFFF;" id="line-1">___________________________</th>
+                                    <th  class="findSection" id="icon-2">
+                                    <i style="color: #FFFF;" class="bi bi-building"></i>
+                                    </th>
+                                    <th   id="line-2">___________________________</th>
+                                    <th class="subConfirm" id="icon-3">
+                                    <i class="bi bi-journal"></i>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td style="color: #FFFF;" class="checkDetails" id="process-1">Check details</td>
+                                    <td></td>
+                                    <td style="color: #FFFF;" class="findSection" id="process-2">Find section</td>
+                                    <td></td>
+                                    <td class="subConfirm" id="process-3">Subject Confirmation</td>
+                                </tr>
+                            </table>
+                        </div>
 
-                                        // enrollment-details
-                                        if(response == "success"){
-                                            $('#enrollment-details').load(
-                                                location.href + ' #enrollment-details'
-                                            );
-                                            $('#regular_available_section').load(
-                                                location.href + ' #regular_available_section'
-                                            );
+                        <div class="card">
+                            <div class="card-body">
+                                <div  style="width: 100%;" class="form-details"
+                                    id="enrollment-details">
+                                    <h3>Enrollment Details</h3>
+
+                                    <?php
+                                        if($type == "SHS"){
+
+                                            ?>
+                                            <form class="row g-3">
+                                                <div class="col-md-4">
+                                                <label for="inputSchoolYear" class="form-label">S.Y.</label>
+                                                <input readonly type="text" value="<?php echo $current_school_year_term; ?>" class="form-control" id="inputSchoolYear" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="inputTrack" class="form-label">Track</label>
+
+                                                    <select id="inputTrack" class="form-select">
+                                                        <?php 
+
+                                                            $SHS_DEPARTMENT = 4;
+                                                        
+                                                            $track_sql = $con->prepare("SELECT 
+                                                            program_id, track, acronym 
+                                                                
+                                                                FROM program 
+                                                            WHERE department_id =:department_id
+                                                            GROUP BY track
+                                                            ");
+
+                                                            $track_sql->bindValue(":department_id", $SHS_DEPARTMENT);
+                                                            $track_sql->execute();
+                                                            
+
+                                                            while($row = $track_sql->fetch(PDO::FETCH_ASSOC)){
+
+                                                                $row_program_id = $row['program_id'];
+
+                                                                $track = $row['track'];
+
+                                                                $selected = ($row_program_id == $program_id) ? "selected" : "";
+
+                                                                echo "<option value='$row_program_id' $selected>$track</option>";
+                                                            }
+                                                        ?>
+                                                        <!-- <option selected>TVL</option>
+                                                        <option>Arts and Design</option> -->
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="inputStrand" class="form-label">Strand</label>
+
+                                                    <select onchange="chooseStrand(this, <?php echo $pending_enrollees_id;?>)" 
+                                                        name="strand" id="strand" class="form-select">
+                                                        <?php 
+
+                                                            $SHS_DEPARTMENT = 4;
+                                                        
+                                                            $track_sql = $con->prepare("SELECT 
+                                                            program_id, track, acronym 
+                                                                
+                                                                FROM program 
+                                                            WHERE department_id =:department_id
+                                                            GROUP BY acronym
+                                                            ");
+
+                                                            $track_sql->bindValue(":department_id", $SHS_DEPARTMENT);
+                                                            $track_sql->execute();
+
+                                                            while($row = $track_sql->fetch(PDO::FETCH_ASSOC)){
+
+                                                                $row_program_id = $row['program_id'];
+
+                                                                $acronym = $row['acronym'];
+
+                                                                $selected = ($row_program_id == $program_id) ? "selected" : "";
+
+                                                                echo "<option value='$row_program_id' $selected>$acronym</option>";
+                                                            }
+                                                        ?>
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="inputYear" class="form-label">Year</label>
+                                                
+                                                    <select id="inputYear" class="form-select">
+
+                                                        <option value="11" selected>Grade 11</option>
+                                                        <option  value="12">Grade 12</option>
+                                                    
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                <label for="inputSemester" class="form-label">Semester</label>
+                                                <input readonly type="text" value="<?php echo $current_school_year_period; ?>" class="form-control" id="inputSchoolYear" />
+                                                <!-- <select id="inputSemester" class="form-select">
+                                                    <option <?php if ($current_school_year_period == 'First') echo 'selected'; ?>>First</option>
+                                                    <option <?php if ($current_school_year_period == 'Second') echo 'selected'; ?>>Second</option>
+                                                </select> -->
+                                                </div>
+                                            </form>
+                                            <?php
                                         }
+                                        else if($type == "Tertiary"){
+                                            ?>
+
+                                            <form class="row g-3">
+                                                <div class="col-md-4">
+                                                    <label for="inputSchoolYear" class="form-label">S.Y.</label>
+                                                    <input readonly type="text" value="<?php echo $current_school_year_term; ?>" class="form-control" id="inputSchoolYear" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="inputTrack" class="form-label">Track</label>
+
+                                                    <select id="inputTrack" class="form-select">
+                                                        <?php 
+
+                                                            $SHS_DEPARTMENT = 4;
+                                                        
+                                                            $track_sql = $con->prepare("SELECT 
+                                                            program_id, track, acronym 
+                                                                
+                                                                FROM program 
+                                                            WHERE department_id !=:department_id
+                                                            GROUP BY track
+                                                            ");
+
+                                                            $track_sql->bindValue(":department_id", $SHS_DEPARTMENT);
+                                                            $track_sql->execute();
+                                                            
+                                                            while($row = $track_sql->fetch(PDO::FETCH_ASSOC)){
+
+                                                                $row_program_id = $row['program_id'];
+
+                                                                $track = $row['track'];
+
+                                                                $selected = ($row_program_id == $program_id) ? "selected" : "";
+
+                                                                echo "<option value='$row_program_id' $selected>$track</option>";
+                                                            }
+                                                        ?>
+                                                    
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="inputStrand" class="form-label">Strand</label>
+
+                                                    <select onchange="chooseStrand(this, <?php echo $pending_enrollees_id;?>)" 
+                                                        name="strand" id="strand" class="form-select">
+                                                        <?php 
+
+                                                            $SHS_DEPARTMENT = 4;
+                                                        
+                                                            $track_sql = $con->prepare("SELECT 
+                                                            program_id, track, acronym 
+                                                                
+                                                                FROM program 
+                                                            WHERE department_id !=:department_id
+                                                            GROUP BY acronym
+                                                            ");
+
+                                                            $track_sql->bindValue(":department_id", $SHS_DEPARTMENT);
+                                                            $track_sql->execute();
+
+                                                            while($row = $track_sql->fetch(PDO::FETCH_ASSOC)){
+
+                                                                $row_program_id = $row['program_id'];
+
+                                                                $acronym = $row['acronym'];
+
+                                                                $selected = ($row_program_id == $program_id) ? "selected" : "";
+
+                                                                echo "<option value='$row_program_id' $selected>$acronym</option>";
+                                                            }
+                                                        ?>
+
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label for="inputYear" class="form-label">Year</label>
+                                                
+                                                    <select id="inputYear" class="form-select">
+
+                                                        <option value="1" selected>1st Year</option>
+                                                        <option value="2">2nd Year</option>
+                                                        <option value="3">3rd Year</option>
+                                                        <option value="4">4th Year</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label for="inputSemester" class="form-label">Semester</label>
+                                                    <input readonly type="text" value="<?php echo $current_school_year_period; ?>" class="form-control" id="inputSchoolYear" />
+                                                    <!-- <select id="inputSemester" class="form-select">
+                                                        <option <?php if ($current_school_year_period == 'First') echo 'selected'; ?>>First</option>
+                                                        <option <?php if ($current_school_year_period == 'Second') echo 'selected'; ?>>Second</option>
+                                                    </select> -->
+                                                    </div>
+                                            </form>
+
+                                            <?php
+                                        }
+                                    ?>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Enrollment Form -->
+                        <div style="display: none;" class="container">
+                            <h3 class="mt-2 text-center text-primary">Enrollment Form</h3>
+                            <div class="bg-content">
+                                <div class="form-details" id="check-details">
+                                    <div class="mb-4 col-md-3">
+                                        <label for="">Form Id</label>
+                                        <input readonly style="width: 100%;" type="text" 
+                                            value='<?php echo $enrollment_form_id;?>' class="form-control">
+                                    </div>
+                                    <div class="mb-4 col-md-3">
+                                        <label for="">Name</label>
+                                        <input readonly style="width: 100%;" type="text" 
+                                            value='<?php echo $student_fullname;?>' class="form-control">
+                                    </div>
+                                    <div class="mb-4 col-md-3">
+                                        <label for="">Admission Type</label>
+                                        <input readonly style="width: 100%;" type="text" 
+                                            value='New' class="form-control">
+                                        </div>
+                                    <div class="mb-4 col-md-3">
+                                        <label for="">Date Submitted</label>
+                                        <input readonly style="width: 100%;" type="text" 
+                                            value='<?php echo $date_creation?>' class="form-control">
+                                    </div>
+                                </div>
+                            </div> 
 
 
+                        </div>
+
+                        <div class="card ">
+                                
+                            <div class="card-header">
+                                <h3 class="text-center text-success">Available Section</h3>
+
+                                <?php 
+
+                                    if($section->CheckIfProgramHasSection($program_id,
+                                        $current_school_year_term) == false){
+
+                                        echo "
+                                            <a href='../section/create.php'>
+                                                <button class='btn btn-success'>Add Section</button>
+                                            </a>
+                                        ";
                                     }
-                                });
-                            }
+                                
+                                ?>
+                                
+                            </div>
 
-                        });
-                    }
+                            <div class="card-body">
+
+                            <form method="POST">
+                                <table id="availableTransfereeSectionTable" class="table table-striped table-bordered table-hover "  style="font-size:13px" cellspacing="0"  > 
+                                    <thead>
+                                        <tr class="text-center"> 
+                                            <th rowspan="2">Section Id</th>
+                                            <th rowspan="2">Section Name</th>
+                                            <th rowspan="2">Student</th>
+                                            <th rowspan="2">Capacity</th>
+                                            <th rowspan="2">Term</th>
+                                            <th rowspan="2"></th>
+                                        </tr>	
+                                    </thead> 	
+                                    <!-- REFF -->
+                                    <tbody>
+                                        <?php
+                                            $course_level = 11;
+                                            $active = "yes";
+
+                                            # Only Available now.
+                                            $sql = $con->prepare("SELECT * FROM course
+
+                                                WHERE program_id=:program_id
+                                                AND active=:active
+                                                AND school_year_term=:school_year_term");
+
+                                            $sql->bindValue(":program_id", $program_id);
+                                            $sql->bindValue(":active", $active);
+                                            $sql->bindValue(":school_year_term", $current_school_year_term);
+
+                                            $sql->execute();
+                                        
+                                            if($sql->rowCount() > 0){
+
+                                                while($get_course = $sql->fetch(PDO::FETCH_ASSOC)){
+
+                                                    $course_id = $get_course['course_id'];
+                                                    $program_section = $get_course['program_section'];
+                                                    $capacity = $get_course['capacity'];
+                                                    $school_year_term = $get_course['school_year_term'];
+                                                    $section = new Section($con, $course_id);
+
+                                                    $section_obj = $section->GetSectionObj($course_id);
+
+                                                    $totalStudent = $section->GetTotalNumberOfStudentInSection($course_id, $current_school_year_id);
+                                                    $capacity = $section_obj['capacity'];
+
+                                                    $program_id = $section_obj['program_id'];
+                                                    $course_level = $section_obj['course_level'];
+
+                                                    $removeSection = "removeSection($course_id, \"$program_section\")";
+
+                                                    // echo $totalStudent;
+                                                    // echo $program_id;
+
+                                                    $new_program_section = $section->AutoCreateAnotherSection($program_section);
+
+                                                    // echo $program_section;
+                                                    // echo "<br>";
+                                                    // echo $new_program_section;
+
+                                                    // $isCloseddisabled = "<input name='selected_course_id' 
+                                                    //     class='radio' value='$course_id' 
+                                                    //     type='radio' " . ($course_id == $student_course_id ? "checked" : "") . " " . ($isClosed ? "disabled" : "") . ">";   
+                                                
 
 
-                    function removeSection(course_id, program_section){
-                        Swal.fire({
+                                                    if($totalStudent == $capacity){
+
+                                                    }
+                                                    echo "
+                                                    <tr class='text-center'>
+                                                        <td>$course_id</td>
+                                                        <td>$program_section</td>
+                                                        <td>$totalStudent</td>
+                                                        <td>$capacity</td>
+                                                        <td>$school_year_term</td>
+                                                        <td>
+                                                            <input name='selected_course_id' class='radio' value='$course_id' type='radio' " . (($totalStudent == $capacity) ? "disabled" : "") . ">
+                                                        <td>
+                                                            <i onclick='$removeSection' style='cursor: pointer; color: orange; " . ($totalStudent != 0 ? "display: none;" : "") . "' class='fas fa-times'></i>
+                                                        </td>
+                                                    </tr>
+                                                ";
+                                                }
+                                                
+                                            }else{
+                                                echo "
+                                                    <div class='col-md-12'>
+                                                        <h4 class='text-center text-muted'>No currently available section for $program_acronym</h4>
+                                                    </div>
+                                                ";
+                                            }
+                                        ?>
+                                    </tbody>
+                                </table>
+
+                                <a href="process_enrollment.php?step1=true&id=<?php echo $pending_enrollees_id;?> ">
+                                    <button type="button" class="btn btn-outline-primary">Return</button>
+                                </a>
+                                <button type="submit" name="pending_choose_section"
+                                    class="btn btn-primary">Proceed
+                                </button>
+
+                            </form>                 
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <script>
+                        function chooseStrand(entity, pending_enrollees_id){
+
+                            var strand = document.getElementById("strand").value;
+
+                            // console.log("Selected value: " + strand);
+
+                            Swal.fire({
                                 icon: 'question',
-                                title: `I agreed to removed ${program_section}.`,
+                                title: `Update Strand?`,
                                 showCancelButton: true,
                                 confirmButtonText: 'Yes',
-                                cancelButtonText: 'No'
+                                cancelButtonText: 'Cancel'
                             }).then((result) => {
-                            if (result.isConfirmed) {
-                                // console.log("nice")
-                                $.ajax({
-                                    url: '../ajax/section/remove_section.php',
-                                    type: 'POST',
-                                    data: {
-                                        course_id
-                                    },
-                                    success: function(response) {
 
-                                        $('#availableTransfereeSectionTable').load(
-                                            location.href + ' #availableTransfereeSectionTable'
-                                        );
+                                if (result.isConfirmed) {
+                                    // REFX
+                                    $.ajax({
+                                        url: '../ajax/pending/update_student_strand.php',
+                                        type: 'POST',
+                                        data: {
+                                            strand, pending_enrollees_id
+                                        },
+                                        success: function(response) {
 
-                                    },
-                                    error: function(xhr, status, error) {
-                                        // handle any errors here
-                                    }
-                                });
-                            } else {
-                                // User clicked "No," perform alternative action or do nothing
-                            }
-                        });
-                    }
-                </script>
+                                            console.log(response);
+
+                                            // enrollment-details
+                                            if(response == "success"){
+                                                $('#enrollment-details').load(
+                                                    location.href + ' #enrollment-details'
+                                                );
+                                                $('#regular_available_section').load(
+                                                    location.href + ' #regular_available_section'
+                                                );
+                                            }
+
+
+                                        }
+                                    });
+                                }
+
+                            });
+                        }
+
+
+                        function removeSection(course_id, program_section){
+                            Swal.fire({
+                                    icon: 'question',
+                                    title: `I agreed to removed ${program_section}.`,
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Yes',
+                                    cancelButtonText: 'No'
+                                }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // console.log("nice")
+                                    $.ajax({
+                                        url: '../ajax/section/remove_section.php',
+                                        type: 'POST',
+                                        data: {
+                                            course_id
+                                        },
+                                        success: function(response) {
+
+                                            $('#availableTransfereeSectionTable').load(
+                                                location.href + ' #availableTransfereeSectionTable'
+                                            );
+
+                                        },
+                                        error: function(xhr, status, error) {
+                                            // handle any errors here
+                                        }
+                                    });
+                                } else {
+                                    // User clicked "No," perform alternative action or do nothing
+                                }
+                            });
+                        }
+                    </script>
                 <?php
+
             }
 
             if(isset($_GET['id'])  && isset($_GET['step3']) && isset($_GET['selected_course_id'])
@@ -1045,6 +1593,182 @@
                 
                 ?>
                     <div class="row col-md-12">
+
+                        <!-- START THIRD -->
+
+                        <div class="back-menu">
+                            <button type="button" class="admission-btn" onclick="find_form()">
+                            <i class="bi bi-arrow-left-circle"></i> Admission
+                            </button>
+                        </div>
+                        
+                        <div class="enrollment-form-container">
+
+                            <div class="enrollment-form-upper">
+                                <h3>Enrollment Form</h3>
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </div>
+
+                            <div class="form-upper-second-container">
+                                <div class="form-inner">
+                                    <h5>Form ID</h5>
+                                    <p><?php echo $enrollment_form_id;?></p>
+                                </div>
+                                <div class="form-inner">
+                                    <h5>Admission Type</h5>
+                                    <p>New</p>
+                                </div>
+                                <div class="form-inner">
+                                    <h5>Student No</h5>
+                                    <p>N/A</p>
+                                </div>
+                                <div class="form-inner">
+                                    <h5>Status</h5>
+                                    <p>Evaluation</p>
+                                </div>
+                                <div class="form-inner">
+                                    <h5>Submitted on</h5>
+                                    <p>
+                                        <?php
+                                            $date = new DateTime($date_creation);
+                                            $formattedDate = $date->format('m/d/Y H:i');
+                                            echo $formattedDate;
+                                        ?>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="process-status">
+                                <table class="selection">
+                                    <tr>
+                                        <th class="checkDetails" id="icon-1">
+                                            <i  style="color: #FFFF;" class="bi bi-clipboard-check"></i>
+                                        </th>
+
+                                        <th style="color: #FFFF;" id="line-1">___________________________</th>
+
+                                        <th  class="findSection" id="icon-2">
+                                            <i style="color: #FFFF;" class="bi bi-building"></i>
+                                        </th>
+
+                                        <th id="line-2">___________________________</th>
+
+                                        <th class="subConfirm" id="icon-3">
+                                            <i style="color: #FFFF;" class="bi bi-journal"></i>
+                                        </th>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #FFFF;" class="checkDetails" id="process-1">Check details</td>
+                                        <td></td>
+                                        <td style="color: #FFFF;" class="findSection" id="process-2">Find section</td>
+                                        <td></td>
+                                        <td class="subConfirm" id="process-3">Subject Confirmation</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <!-- REFv3 -->
+                        <!--  -->
+                        <div class="height-section-details">
+                            <div class="step-3-section-container">
+
+                                <div class="form-details-enrolled" id="subjects-details">
+                                    <h3><?php echo $section_name;?> Subjects</h3>
+                                        
+                                    <table style="font-size: 15px;"> 
+                                        <thead>
+                                            <tr class="text-center"> 
+                                                <th rowspan="2">Id</th>
+                                                <th rowspan="2">Code</th>
+                                                <th rowspan="2">Description</th>
+                                                <th rowspan="2">Unit</th>
+                                                <th rowspan="2">Type</th>
+                                            </tr>
+                                        </thead> 
+                                            <tbody>
+                                                <?php
+                                                    $course_level = 11;
+                                                    $active = "yes";
+
+                                                    # Only Available now.
+
+                                                    $sql = $con->prepare("SELECT 
+                                                        t1.*,
+                                                        t3.room, t3.schedule_time, t3.schedule_day ,
+                                                        t4.firstname,
+                                                        t4.lastname
+                                                        
+                                                        FROM subject as t1
+
+                                                        INNER JOIN course as t2 ON t2.course_id = t1.course_id
+                                                        LEFT JOIN subject_schedule as t3 ON t3.subject_id = t1.subject_id
+                                                        LEFT JOIN teacher as t4 ON t4.teacher_id = t3.teacher_id
+
+                                                        WHERE t1.course_id=:course_id
+                                                        AND t1.semester=:semester
+                                                        ");
+
+                                                    $sql->bindValue(":course_id", $selected_course_id);
+                                                    $sql->bindValue(":semester", $current_school_year_period);
+                                                    // $sql->bindValue(":course_level", $course_level);
+
+                                                    $sql->execute();
+                                                
+                                                    if($sql->rowCount() > 0){
+
+                                                        while($row = $sql->fetch(PDO::FETCH_ASSOC)){
+
+                                                            $subject_id = $row['subject_id'];
+                                                            $subject_code = $row['subject_code'];
+                                                            $subject_title = $row['subject_title'];
+                                                            $unit = $row['unit'];
+                                                            $subject_type = $row['subject_type'];
+
+                                                            $room = $row['room'];
+                                                            $schedule_time = $row['schedule_time'];
+                                                            $schedule_day = $row['schedule_day'];
+                                                            
+                                                            $teacher_firstname = $row['firstname'];
+                                                            $teacher_lastname = $row['lastname'];
+
+                                                            // echo $subject_id;
+                                                            echo "
+                                                            <tr class='text-center'>
+                                                                <td>$subject_id</td>
+                                                                <td>$subject_code</td>
+                                                                <td>$subject_title</td>
+                                                                <td>$unit</td>
+                                                                <td>$subject_type</td>
+                                                            </tr>
+                                                        ";
+                                                        }
+                                                        
+                                                    }
+                                                ?>
+                                            </tbody>
+                                    </table>
+
+                                    
+                                </div>
+                                <div class="step-3-subject-bottom">
+                                        <a href="process_enrollment.php?step2=true&id=<?php echo $pending_enrollees_id;?>">
+                                            <button type="button" class="button-style-primary primary">Return</button>
+                                        </a>
+                                        <button onclick='confirmPendingValidation("<?php echo $type ?>", "<?php echo $firstname ?>", "<?php echo $lastname ?>", "<?php echo $middle_name ?>", "<?php echo $password ?>", "<?php echo $program_id ?>", "<?php echo $civil_status ?>", "<?php echo $nationality ?>", "<?php echo $contact_number ?>", "<?php echo $birthday ?>", "<?php echo $age ?>", "<?php echo $guardian_name ?>", "<?php echo $guardian_contact_number ?>", "<?php echo $sex ?>", "<?php echo $student_status ?>", "<?php echo $pending_enrollees_id ?>", "<?php echo $address; ?>", "<?php echo $lrn; ?>", "<?php echo $selected_course_id; ?>", "<?php echo $enrollment_form_id; ?>", "<?php echo $religion; ?>", "<?php echo $birthplace; ?>", "<?php echo $email; ?>")'
+                                            name='confirm_validation_btn'
+                                            class='button-style-success success'>
+                                            Confirm
+                                        </button>
+                                    </div>
+                            </div>
+
+                        </div>
+
+
+                        <!--  -->
 
                         <div class="content">
 
@@ -1196,7 +1920,6 @@
                                 name='confirm_validation_btn'
                                 class='btn btn-success btn-sm'>Confirm</button>
                         </div> 
-                    </div>
 
                     <script>
 
@@ -1236,8 +1959,9 @@
                                         dataType: "json",
                                         success: function(response) {
 
-                                            console.log(response);
+                                            // console.log(response);
                                             // console.log(response['status'])
+                                            
                                             if(response['status'] == "full"){
                                                     Swal.fire({
                                                     title: "Selected section is full.",
@@ -1404,10 +2128,9 @@
                                 </table>
                             </div>
 
-                            
                             <div class="bg-content">
                                 <div class="form-details" id="check-details">
-                                    <h3>Student details</h3>
+                                    <h3>Student Details</h3>
 
                                     <form class="row g-3">
                                         <div class="col-md-4">

@@ -20,7 +20,9 @@
             $student_creation_url = $base_url . '/student/index.php';
             $section_url = $base_url . '/student/index.php';
             $strand_section = $base_url . '/section/index.php';
-            $enrollment_url = $base_url . '/enrollment/index.php';
+            
+            // $enrollment_url = $base_url . '/enrollment/index.php';
+            $enrollment_url = $base_url . '/enrollment/history.php';
 
             $school_year_url = $base_url . '/school_year/indexv2.php';
             $admission_url = $base_url . '/admission/evaluation.php';
@@ -35,17 +37,17 @@
             $result = $this->createNavigation("$admission_url",
                 "../../assets/images/icons/home.png", "Admission");
             
-            $result .= $this->createNavigation("$student_creation_url",
-                "../../assets/images/icons/home.png", "Students");
+            $result .= $this->createNavigationIcon("$student_creation_url",
+                "fas fa-user", "Students");
 
-            $result .= $this->createNavigation("$strand_section",
-                "../../assets/images/icons/home.png", "Sections");
+            $result .= $this->createNavigationIcon("$strand_section",
+                "fas fa-hotel", "Sections");
 
-            $result .= $this->createNavigation("$teacher_url",
-                "../../assets/images/icons/home.png", "Teacher");
+            $result .= $this->createNavigationIcon("$teacher_url",
+                "fas fa-book-reader", "Teacher");
 
-            $result .= $this->createNavigation("$courses_url",
-                "../../assets/images/icons/home.png", "Courses");
+            // $result .= $this->createNavigation("$courses_url",
+            //     "../../assets/images/icons/home.png", "Courses");
 
 
             $result .= $this->createNavigation("$enrollment_url",
@@ -77,12 +79,24 @@
                 </div>
             ";
         }
+                        // <img src='$profile'>
         
         public function createNavigation($link, $profile, $text){
             return "
                 <div class='navigationItem'>
-                    <a href='$link'>
+                    <a style='color: #333;' href='$link'>
                         <img src='$profile'>
+                        <span>$text</span>
+                    </a>
+                </div>
+            ";
+        }
+        
+        public function createNavigationIcon($link, $profile, $text){
+            return "
+                <div class='navigationItem'>
+                    <a href='$link'>
+                        <i style='color: #333;' class='$profile'></i>
                         <span>$text</span>
                     </a>
                 </div>

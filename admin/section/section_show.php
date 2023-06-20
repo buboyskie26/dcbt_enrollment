@@ -58,6 +58,8 @@
                             <?php
                                 $query = "";
 
+
+
                                 // if($current_school_year_period == "First"){
                                 //     $query = $con->prepare("SELECT 
                                 //         DISTINCT
@@ -74,6 +76,9 @@
 
                                 //     ");
                                 // }
+
+                                // # Select Course Id
+                                // # Select school_year_term
 
                                 // if($current_school_year_period == "Second"){
                                 //     $query = $con->prepare("SELECT 
@@ -95,32 +100,31 @@
 
                                 //     ");
                                 // }
+ 
+                                // $query->bindValue(":term", $current_school_year_term);
+                                // $query->execute();
+  
+                                // echo "<option value='0' selected>Select School Year</option>";
+                                // while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                                //     echo "<option value='" . $row['school_year_id'] . "'>" . $row['period'] . "</option>";
+                                // }
 
-                                    $query = $con->prepare("SELECT 
-                                        DISTINCT
-                                        t1.school_year_id,
-                                        t1.period
-                                    
-                                        FROM school_year as t1
+                                $query = $con->prepare("SELECT DISTINCT e.school_year_id, sy.period
+                                    FROM enrollment e
 
-                                        -- INNER JOIN course as t2 ON t2.school_year_term = t1.term
+                                    INNER JOIN school_year sy ON e.school_year_id = sy.school_year_id
+                                    WHERE e.course_id = :course_id
+                                    -- AND sy.period = 11
+                                ");
 
-                                        -- AND t1.period='First'
-
-                                        WHERE t1.term=:term
-
-                                    ");
-
-                                $query->bindValue(":term", $current_school_year_term);
+                                $query->bindValue(":course_id", $course_id);
                                 $query->execute();
 
-                                // $query->bindValue(":course_id", $course_id);
-                                // $query->execute();
-
-                                echo "<option value='0' selected>Select School Year</option>";
+                                echo "<option selected>Select School Year</option>";
                                 while($row = $query->fetch(PDO::FETCH_ASSOC)) {
                                     echo "<option value='" . $row['school_year_id'] . "'>" . $row['period'] . "</option>";
                                 }
+
                             ?>     
                         </select>
 
@@ -421,6 +425,8 @@
                 }
             });
 
+            console.log(school_year_id)
+
             $.ajax({
                 url: '../ajax/section/get_strand_show.php',
                 type: 'POST',
@@ -436,7 +442,6 @@
                     var html = `
                         <div class="card">
                             <div class="card-header">
-                                <a href="section_students.php?course_id=<?php echo $section_id;?>&sy_id=<?php echo $current_school_year_id;?>">
                                 <a href="section_students.php?course_id=${course_id}&sy_id=${school_year_id}">
                                     <button class='btn btn-sm btn-success'>Show Students</button>
                                 </a>

@@ -321,9 +321,9 @@
     
                         <div class='form-group mb-2'>
                             <select class='form-control' name='subject_type'>
-                                <option value='CORE SUBJECTS'>CORE SUBJECTS</option>
-                                <option value='APPLIED SUBJECTS'>APPLIED SUBJECTS</option>
-                                <option value='SPECIALIZED_SUBJECTS'>SPECIALIZED_SUBJECTS</option>
+                                <option value='Core'>Core</option>
+                                <option value='Applied'>Applied</option>
+                                <option value='Specialized'>Specialized</option>
                             </select>
                         </div>
 

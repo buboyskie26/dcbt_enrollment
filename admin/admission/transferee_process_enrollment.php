@@ -3458,11 +3458,13 @@
                                         <?php 
                                     }
                                 ?>
+
                             <a href="transferee_process_enrollment.php?step2=true&id=<?php echo $pending_enrollees_id;?>&selected_course_id=<?php echo $selected_course_id;?>">
                                 <button type="button" class="btn-secondary btn">
                                     Go back
                                 </button>
                             </a>
+                            
                         </form>
 
                     </div> 

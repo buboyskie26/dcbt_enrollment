@@ -1,0 +1,341 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* font-family: 'Lato', sans-serif; */
+    font-family: 'Lato', sans-serif;
+    line-height: 43.2px;
+}
+
+
+ .content{
+    margin-top: -10px;
+    
+ }
+
+/* ====Account-Information====*/
+.image-text {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.image-text .image img {
+    width: 57px;
+    height: 57px;
+    padding-left: 5px;
+    padding-top: 10px;
+    left: 20px;
+    top: 14px;
+    border-radius: 50px;
+}
+
+.image-text .header-text span {
+    display: flex;
+    align-items: center;
+}
+
+.image-text .header-text .name {
+    font-weight: 700;
+    color: white;
+}
+
+.image-text .header-text .email {
+    color: gray;
+    font-size: small;
+}
+
+.image-text .header-text .role {
+    color: gray;
+    font-size: small;
+}
+
+/*====Nav-items====*/
+li a {
+    display: block;
+    color: gray;
+    padding: 8px 16px;
+    align-items: center;
+}
+
+li .active {
+    color: white;
+}
+
+li a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+/*====Teachers-style====*/
+.dashboard {
+    margin: 30px;
+    width: auto;
+    position: relative;
+}
+
+
+
+.dashboard {
+    margin: 30px;
+    width: auto;
+    position: relative;
+}
+
+.dashboard h3 {
+    padding-right: 10px;
+}
+
+.subject-teachers {
+    padding-right: 10px;
+}
+
+.form-box{
+    display: inline-block;
+}
+
+.button-box{
+    position: relative;
+    background-color: gray;
+    align-items: center;
+    padding: 0px;
+    border-radius: 30px;
+}
+
+.toggle-btn{
+    padding: 10px 41.2px;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    outline: none;
+    position: relative;
+    text-align: center;
+    color: white;
+    font-weight: 800;
+}
+
+#btn{
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: 125px;
+    height: 100%;
+    background: #470203;
+    border-radius: 30px;
+    transition: .4s;
+}
+
+.subject-teachers {
+    margin: 20px;
+    display: flex;
+    color: white;
+    flex-direction: row;
+}
+
+.subject-teachers h2 {
+    margin: 0;
+    text-align: center;
+    font-size: 64px;
+    font-weight: 600;
+}
+
+.subject-teachers p {
+    margin-bottom: 0;
+    padding-left: 15px;
+}
+
+#subject-without-teacher-shs {
+    background-color: #ff7676;
+}
+
+#subjects-with-teacher-shs {
+    background-color: #76deff;
+}
+
+#total-teacher-shs {
+    background-color: #ffd076;
+}
+
+#subject-without-teacher-college {
+    background-color: #ff7676;
+}
+
+#subjects-with-teacher-college {
+    background-color: #76deff;
+}
+
+#total-teacher-college {
+    background-color: #ffd076;
+}
+
+.teachers {
+    margin-right: 10px;
+    flex-grow: 1;
+}
+
+.active{
+    background-color: #d9d9d9;
+}
+
+.none_active{
+    background-color: #bb4444;
+
+}
+
+#teacher-list-div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    /* background-color: #d9d9d9; */
+}
+
+#teacher-list-div a {
+    text-align: center;
+    width: 100%;
+}
+
+#subject-load-div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+}
+
+#subject-load-div a {
+    color: white;
+    text-align: center;
+    width: 100%;
+}
+
+.choices {
+    padding-top: 20px;
+    background-color: #bb4444;
+    margin: 0;
+    padding-left: 40px;
+    padding-right: 40px;
+    display: flex;
+    justify-content: center;
+    height: 54px;
+}
+
+.teach {
+    border-radius: 10px;
+    padding: 10px;
+    margin-left: -5px;
+    margin-right: -5px;
+    background-color: white;
+}
+
+.teach h1 {
+    color: #bb4444;
+    margin: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+table th {
+    text-align: center;
+    background-color: #dcdcdc;
+    width: auto;
+    font-weight: 700;
+    font-family: 'lato', sans-serif;
+}
+
+table th:nth-child(6) {
+    padding-right: 13.6px;
+}
+
+.td-section {
+    font-weight: 800;
+}
+
+table td {
+    font-weight: 400;
+    font-family: 'lato', sans-serif;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.table-body {
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+    height: 100px;
+}
+
+.teacher-container {
+    padding: 30px;
+    background-color: #dcdcdc;
+}
+
+.add-new {
+    margin-top: 10px;
+    border: none;
+    color: white;
+    font-family: 'open sans', sans-serif;
+    height: 35px;
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 5px;
+    background-color: #bb4444;
+    width: 100%;
+}
+
+.choices a {
+    font-family: 'lato', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    text-decoration: none;
+    color: black;
+}
+
+#subject {
+    display: none;
+}
+
+#college-dashboard {
+    display: none;
+}
+
+#college-teacher {
+    display: none;
+}
+
+#college-subject {
+    display: none;
+}
+
+.dashboard a,
+h3 {
+    font-weight: normal;
+    font-family: 'lato', sans-serif;
+}
+
+h1 {
+    font-family: 'lato', sans-serif;
+    font-weight: 700;
+    font-size: 36;
+}
+
+p {
+    font-family: 'montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+h2 {
+    font-family: 'montserrat', sans-serif;
+    font-size: 64px;
+    font-weight: 600;
+}

@@ -69,8 +69,11 @@
                 $result .= $this->createNavigation("$user_dashboard_url",
                     "../assets/images/icons/history.png", "My Class");
 
-                $result .= $this->createNavigation("../logout.php", 
-                    "../assets/images/icons/logout.png", "Logout");
+                // $result .= $this->createNavigation("../logout.php", 
+                //     "../assets/images/icons/logout.png", "Logout");
+
+                $result .= $this->createNavigation("../student_logout.php", 
+                "../assets/images/icons/logout.png", "Logout");  
             }
 
             return "
